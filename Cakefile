@@ -56,3 +56,9 @@ task 'build', 'Build Uniform', ->
 
 task 'clean', 'Delete distribution folder', ->
   exec "rm -rf #{dist}"
+
+task 'build:example', 'Build example', ->
+  invoke 'build'
+  console.log 'Building example...'
+  exec "coffee -c example/todo.coffee", ->
+    console.log ' done.'
