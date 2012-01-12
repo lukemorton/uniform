@@ -5,26 +5,27 @@
   if (typeof define == 'function' && typeof define.amd == 'object') {
     define(['require'], definition);
   } else {
-    function require(path) {
-      return this[path];
-    }
-    this.Uniform = definition();
+    this.Uniform = definition(function (path) {
+      // This is a fake require for jQuery
+      return this['jQuery'];
+    });
   }
-}(function() {
+}(function(require) {
   var Uniform;
 
 Uniform = (function() {
-  var eventMap;
+  var eventMap, previouslyMapped;
 
   function Uniform(settings) {
     var key, val;
     for (key in settings) {
       val = settings[key];
-      this.key = val;
+      this[key] = val;
     }
-    this.delegateEvents();
-    if (!(this.el && (this.el.length != null))) this.el = this.buildTemplate();
     if (this.$ == null) this.$ = require('jquery');
+    if (!(this.el && (this.el.length != null))) this.el = this.buildTemplate();
+    this.cacheElements();
+    this.delegateEvents();
     this.init();
   }
 
@@ -45,37 +46,37 @@ Uniform = (function() {
   Uniform.prototype.events = {};
 
   Uniform.prototype.buildTemplate = function() {
+    if (typeof this.template === 'function') this.template = this.template();
     return this.$(this.template);
   };
 
+  previouslyMapped = false;
+
   eventMap = function(fn, events) {
-    var callback, eventType, selector, _results;
-    _results = [];
+    var callback, eventType, previousMapped, selector;
+    var _this = this;
+    if (fn === 'off' && previouslyMapped === false) return;
     for (selector in events) {
       events = events[selector];
       if (selector === '') {
-        _results.push((function() {
-          var _results2;
-          _results2 = [];
-          for (eventType in events) {
-            callback = events[eventType];
-            _results2.push(this.el[fn](eventType + this.ns, callback));
-          }
-          return _results2;
-        }).call(this));
+        for (eventType in events) {
+          callback = events[eventType];
+          if (typeof callback === 'string') callback = this[callback];
+          this.el[fn]("" + eventType + "." + this.ns, function() {
+            return callback.apply(_this, arguments);
+          });
+        }
       } else {
-        _results.push((function() {
-          var _results2;
-          _results2 = [];
-          for (eventType in events) {
-            callback = events[eventType];
-            _results2.push(this.el[fn](eventType + this.ns, selector, callback));
-          }
-          return _results2;
-        }).call(this));
+        for (eventType in events) {
+          callback = events[eventType];
+          if (typeof callback === 'string') callback = this[callback];
+          this.el[fn]("" + eventType + "." + this.ns, selector, function() {
+            return callback.apply(_this, arguments);
+          });
+        }
       }
     }
-    return _results;
+    if (fn === 'off') previousMapped = false;
   };
 
   Uniform.prototype.delegateEvents = function(eventsToDelegate) {
@@ -93,6 +94,17 @@ Uniform = (function() {
 
   Uniform.prototype.undelegateEvents = function() {
     return eventMap.call(this, 'off', this.events);
+  };
+
+  Uniform.prototype.cacheElements = function() {
+    var name, sel, _ref, _results;
+    _ref = this.elements;
+    _results = [];
+    for (name in _ref) {
+      sel = _ref[name];
+      _results.push(this[name] = this.find(sel));
+    }
+    return _results;
   };
 
   Uniform.prototype.destroy = function() {
