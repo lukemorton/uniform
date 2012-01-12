@@ -20,7 +20,9 @@ class Uniform
 
   events: {}
 
-  buildTemplate: -> @$(@template)
+  buildTemplate: ->
+    @template = @template() if typeof @template is 'function'
+    @$(@template)
 
   eventMap = (fn, events) ->
     for selector, events of events
