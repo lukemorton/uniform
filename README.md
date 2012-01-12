@@ -48,9 +48,10 @@ jQuery -> new ContactForm(el: $('#contact'))
 
 ## CoffeeScript in the browser?
 
-Uniform is best used in compiled CoffeeScript browser scripts.
-Since Uniform is a CoffeeScript class it is easiest to extend
-and use it if your front end code is also CoffeeScript.
+Uniform is best used in compiled CoffeeScript browser
+environments. Since Uniform is a CoffeeScript class it is
+easiest to extend and use it if your front end code is also
+CoffeeScript.
 
 Use it how you like though.
 
