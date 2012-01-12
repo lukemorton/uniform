@@ -2,6 +2,10 @@
 #
 # Describes a DOM element and it's children along with their
 # behaviour in a web page.
+#
+# Written by Luke Morton, MIT licensed.
+#
+# https://github.com/DrPheltRight/uniform
 class Uniform
 
   # The constructor takes one argument, an object, which can
