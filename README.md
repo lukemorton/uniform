@@ -2,9 +2,8 @@
 
 I present to you a ViewController for the browser. A
 ViewController (in this case) is a class that describes the
-behaviour of an element and it's children.
-
-It goes well with jQuery.
+behaviour of an element and it's children. It goes well with
+jQuery but can use whatever you like.
 
 Here's an example:
 
@@ -51,15 +50,16 @@ jQuery -> new ContactForm(el: $('#contact'))
 
 Uniform is best used in compiled CoffeeScript browser scripts.
 Since Uniform is a CoffeeScript class it is easiest to extend
-and use Uniform if your front end code is also CoffeeScript.
+and use it if your front end code is also CoffeeScript.
 
 Use it how you like though.
 
 ## Features
 
  - Can build it's own element using a template
- - Can hook onto existing elements in the DOM
- - Can delegate events of child elements or directly attach
+ - Can hook onto existing elements in the DOM instead of using
+   a previously defined template
+ - Can delegate events of child elements and directly attach
    events to itself
  - Can cache jQuery objects so that you don't have to
  - Can be used with AMD or simply included in your HTML
