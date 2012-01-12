@@ -34,12 +34,12 @@ task 'build', 'Build Uniform', ->
         if (typeof define == 'function' && typeof define.amd == 'object') {
           define(['require'], definition);
         } else {
-          function require(path) {
-            return this[path];
-          }
-          this.Uniform = definition();
+          this.Uniform = definition(function (path) {
+            // This is a fake require for jQuery
+            return this['jQuery'];
+          });
         }
-      }(function() {
+      }(function(require) {
         #{code}
         return Uniform;
       });
