@@ -31,10 +31,11 @@ task 'build', 'Build Uniform', ->
     
     code = """
       !function (definition) {
-        if (typeof define == 'function' && typeof define.amd == 'object')
+        if (typeof define == 'function' && typeof define.amd == 'object') {
           define(['jquery'], definition);
-        else
+        } else {
           this.Uniform = definition(this.jQuery);
+        }
       }(function() {
         #{code}
         return Uniform;
