@@ -28,9 +28,12 @@ class Uniform
   eventMap = (fn, events) ->
     for selector, events of events
       if selector is ''
-        @el[fn](eventType+@ns, callback) for eventType, callback of events
+        for eventType, callback of events
+          @el[fn]("#{eventType}.#{@ns}", => callback.apply(@, arguments)) 
       else
-        @el[fn](eventType+@ns, selector, callback) for eventType, callback of events
+        for eventType, callback of events
+          @el[fn]("#{eventType}.#{@ns}", selector, => callback.apply(@, arguments))
+    return
 
   delegateEvents: (eventsToDelegate = @events) ->
     unless eventsToDelegate is @events
