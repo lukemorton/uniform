@@ -68,11 +68,11 @@ Use it how you like though.
 ## Getting a copy
 
 You can simply use the JS found in the dist folder of the
-Uniform git repo [http://github.com/DrPheltRight/uniform]()
+Uniform git repo [https://github.com/DrPheltRight/uniform]()
 
 ## Hacking
 
-Clone the repository [http://github.com/DrPheltRight/uniform.git]()
+Clone the repository [https://github.com/DrPheltRight/uniform.git]()
 and then run "cake build" to make a fresh copy of Uniform.
 
 ## License
