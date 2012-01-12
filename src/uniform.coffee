@@ -1,9 +1,9 @@
 class Uniform
   constructor: (settings) ->
-    @key = val for key, val of settings
-    @delegateEvents()
-    @el = @buildTemplate() unless @el and @el.length?
+    @[key] = val for key, val of settings
     @$ = require 'jquery' unless @$?
+    @el = @buildTemplate() unless @el and @el.length?
+    @delegateEvents()
     @init()
   
   el: null
