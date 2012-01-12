@@ -3,6 +3,7 @@ class Uniform
     @[key] = val for key, val of settings
     @$ = require 'jquery' unless @$?
     @el = @buildTemplate() unless @el and @el.length?
+    @cacheElements()
     @delegateEvents()
     @init()
   
@@ -40,6 +41,8 @@ class Uniform
     eventMap.call(@, 'on', @events)
 
   undelegateEvents: -> eventMap.call(@, 'off', @events)    
+  cacheElements: ->
+    @[name] = @find(sel) for name, sel of @elements
 
   destroy: ->
     @undelegateEvents()
