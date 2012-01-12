@@ -2,10 +2,14 @@
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
-  if (typeof define == 'function' && typeof define.amd == 'object')
-    define(['jquery'], definition);
-  else
-    this.Uniform = definition(this.jQuery);
+  if (typeof define == 'function' && typeof define.amd == 'object') {
+    define(['require'], definition);
+  } else {
+    function require(path) {
+      return this[path];
+    }
+    this.Uniform = definition();
+  }
 }(function() {
   var Uniform;
 
