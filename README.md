@@ -29,7 +29,7 @@ class ContactForm extends Uniform
   
   # We delegate the submit event to @sendResponse()
   events:
-    '':
+    '': # This empty string means attach to thyself
       'submit': 'sendResponse'
 
   # Do the sending :)
