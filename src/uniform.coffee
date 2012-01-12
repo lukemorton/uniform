@@ -25,7 +25,10 @@ class Uniform
     @template = @template() if typeof @template is 'function'
     @$(@template)
 
+  previouslyMapped = false
   eventMap = (fn, events) ->
+    return if fn is 'off' and previouslyMapped is false
+    
     for selector, events of events
       if selector is ''
         for eventType, callback of events
