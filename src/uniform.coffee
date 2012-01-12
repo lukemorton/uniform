@@ -29,9 +29,11 @@ class Uniform
     for selector, events of events
       if selector is ''
         for eventType, callback of events
+          callback = @[callback] if typeof callback is 'string'
           @el[fn]("#{eventType}.#{@ns}", => callback.apply(@, arguments)) 
       else
         for eventType, callback of events
+          callback = @[callback] if typeof callback is 'string'
           @el[fn]("#{eventType}.#{@ns}", selector, => callback.apply(@, arguments))
     return
 
