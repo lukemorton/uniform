@@ -38,6 +38,8 @@ class Uniform
         for eventType, callback of events
           callback = @[callback] if typeof callback is 'string'
           @el[fn]("#{eventType}.#{@ns}", selector, => callback.apply(@, arguments))
+
+    previousMapped = false if fn is 'off'
     return
 
   delegateEvents: (eventsToDelegate = @events) ->
