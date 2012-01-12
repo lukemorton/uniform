@@ -1,0 +1,11 @@
+{
+  "author": "Luke Morton <lukemorton.designs@gmail.com> (http://lukemorton.co.uk)",
+  "name": "Uniform",
+  "description": "ViewController for the masses",
+  "version": "0.1.0",
+  "homepage": "http://github.com/DrPheltRight/uniform",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DrPheltRight/uniform.git"
+  }
+}
