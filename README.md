@@ -1,13 +1,15 @@
 # Uniform
 
-A ViewController for CoffeeScript in the browser. In the case
-of Uniform a ViewController is a class that describes the
+I present to you a ViewController for the browser. A
+ViewController (in this case) is a class that describes the
 behaviour of an element and it's children.
 
 It goes well with jQuery.
 
+Here's an example:
+
 ``` coffeescript
-# Let's scribe a contact form
+# Let's describe a contact form
 class ContactForm extends Uniform
   # The HTML template
   template: """
@@ -39,7 +41,10 @@ class ContactForm extends Uniform
       @btn.text('Send')
 
 # Initialise
-new ContactForm
+jQuery -> new ContactForm
+
+# Or use on an existing element
+jQuery -> new ContactForm(el: $('#contact'))
 ```
 
 ## CoffeeScript in the browser?
@@ -49,6 +54,15 @@ Since Uniform is a CoffeeScript class it is easiest to extend
 and use Uniform if your front end code is also CoffeeScript.
 
 Use it how you like though.
+
+## Features
+
+ - Can build it's own element using a template
+ - Can hook onto existing elements in the DOM
+ - Can delegate events of child elements or directly attach
+   events to itself
+ - Can cache jQuery objects so that you don't have to
+ - Can be used with AMD or simply included in your HTML
 
 ## Getting a copy
 
