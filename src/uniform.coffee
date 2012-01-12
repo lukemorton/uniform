@@ -50,7 +50,8 @@ class Uniform
     @undelegateEvents()
     eventMap.call(@, 'on', @events)
 
-  undelegateEvents: -> eventMap.call(@, 'off', @events)    
+  undelegateEvents: -> eventMap.call(@, 'off', @events)
+  
   cacheElements: ->
     @[name] = @find(sel) for name, sel of @elements
 
