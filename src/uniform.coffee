@@ -8,6 +8,9 @@
 # https://github.com/DrPheltRight/uniform
 class Uniform
 
+  # Have we previously delegated events?
+  delegated = false
+
   # The constructor takes one argument, an object, which can
   # override and append properties before initialising.
   #
@@ -53,26 +56,9 @@ class Uniform
     @template = @template() if typeof @template is 'function'
     @$(@template)
 
-  # Have we previously delegated events?
-  previouslyMapped = false
 
-  # Private method to delegate or undelegate events. Will not
-  # undelegate if not previously delegated.
-  eventMap = (fn, events) ->
-    return if fn is 'off' and previouslyMapped is false
-    
-    for selector, events of events
-      if selector is ''
-        for eventType, callback of events
-          callback = @[callback] if typeof callback is 'string'
-          @el[fn]("#{eventType}.#{@ns}", => callback.apply(@, arguments)) 
-      else
-        for eventType, callback of events
-          callback = @[callback] if typeof callback is 'string'
-          @el[fn]("#{eventType}.#{@ns}", selector, => callback.apply(@, arguments))
-
-    previousMapped = false if fn is 'off'
-    return
+  # Build a namespace eventType
+  nsEvent =  (eventType = '') -> "#{eventType}.#{@ns}#{@uid}"
 
   # Delegate events. Optionally takes a map of new events to
   # add to the object's previously defined events.
@@ -82,10 +68,23 @@ class Uniform
       @events[selector] = events for selector, events of eventsToDelegate
     
     @undelegateEvents()
-    eventMap.call(@, 'on', @events)
+
+    for selector, events of @events
+      if selector is ''
+        for eventType, callback of events
+          callback = @[callback] if typeof callback is 'string'
+          @el.on(nsEvent.call(@, eventType), => callback.apply(@, arguments)) 
+      else
+        for eventType, callback of events
+          callback = @[callback] if typeof callback is 'string'
+          @el.on(nsEvent.call(@, eventType), selector, => callback.apply(@, arguments))
+
+    delegated = true
 
   # Undelegate all events
-  undelegateEvents: -> eventMap.call(@, 'off', @events)
+  undelegateEvents: ->
+    @el.off(nsEvent.call(@)) if delegated?
+    delegate = false
   
   # Cache elements relative to @elements
   cacheElements: ->
