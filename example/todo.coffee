@@ -14,7 +14,7 @@ class TodoList extends Uniform
   template: """
     <div id="todo">
       <form>
-        <input name="item" />
+        <input name="item" autofocus />
       </form>
       <ul></ul>
     </div>
@@ -36,7 +36,7 @@ class TodoList extends Uniform
         # @ will always represent this instance *not* the
         # DOMElement triggering the click
         e.preventDefault()
-        @addItem(@item.val())
+        @addItem(val) if val = @item.val()
         @item.val('').focus()
 
   # This is a custom method
@@ -54,7 +54,7 @@ class TodoList extends Uniform
     $('body').append(@el)
     @addItem('Go to tescos')
     @addItem('Buy some food')
-    
+
 
 # Time to describe the individual todo items
 class TodoItem extends Uniform

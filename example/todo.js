@@ -10,7 +10,7 @@
       TodoList.__super__.constructor.apply(this, arguments);
     }
 
-    TodoList.prototype.template = "<div id=\"todo\">\n  <form>\n    <input name=\"item\" />\n  </form>\n  <ul></ul>\n</div>";
+    TodoList.prototype.template = "<div id=\"todo\">\n  <form>\n    <input name=\"item\" autofocus />\n  </form>\n  <ul></ul>\n</div>";
 
     TodoList.prototype.elements = {
       item: 'input[name=item]',
@@ -20,8 +20,9 @@
     TodoList.prototype.events = {
       'form': {
         submit: function(e) {
+          var val;
           e.preventDefault();
-          this.addItem(this.item.val());
+          if (val = this.item.val()) this.addItem(val);
           return this.item.val('').focus();
         }
       }
