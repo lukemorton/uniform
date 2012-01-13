@@ -4,9 +4,29 @@
 # behaviour in a web page.
 #
 # Written by Luke Morton, MIT licensed.
-#
 # https://github.com/DrPheltRight/uniform
 class Uniform
+  
+  # Unique counter
+  @uniqueCount = 0
+
+  # Unique ID for this Uniform
+  uid: ++Uniform.uniqueCounter
+  
+  # DOM element, that this object represents
+  el: null
+
+  # The template, blank by default
+  template: ''
+
+  # JS library, default is jQuery as set in constructor
+  $: null
+
+  # A namespace to create events under
+  ns: 'Uniform'
+
+  # The event map
+  events: {}
 
   # Have we previously delegated events?
   delegated = false
@@ -27,27 +47,9 @@ class Uniform
     @cacheElements()
     @delegateEvents()
     @init()
-  
-  # DOM element, that this object represents
-  el: null
-
-  # The template, blank by default
-  template: ''
-
-  # JS library, default is jQuery as set in constructor
-  $: null
-
-  # Find elements relative to @el
-  find: (sel) -> @el.find(sel)
 
   # By default @init() does nothing
-  init: (-> )
-
-  # A namespace to create events under
-  ns: 'Uniform'
-
-  # The event map
-  events: {}
+  init: -> null
 
   # Private method for building the template. If the template
   # is a function it will be executed and its return value
@@ -56,6 +58,8 @@ class Uniform
     @template = @template() if typeof @template is 'function'
     @$(@template)
 
+  # Find elements relative to @el
+  find: (sel) -> @el.find(sel)
 
   # Build a namespace eventType
   nsEvent =  (eventType = '') -> "#{eventType}.#{@ns}#{@uid}"
@@ -80,18 +84,22 @@ class Uniform
           @el.on(nsEvent.call(@, eventType), selector, => callback.apply(@, arguments))
 
     delegated = true
+    return @
 
   # Undelegate all events
   undelegateEvents: ->
     @el.off(nsEvent.call(@)) if delegated?
     delegate = false
+    return @
   
   # Cache elements relative to @elements
   cacheElements: ->
     @[name] = @find(sel) for name, sel of @elements
+    return @
 
   # Undelegate and remove @el from the DOM!
   destroy: ->
     @undelegateEvents()
     @el.remove()
     @el = null
+    return @
