@@ -14,8 +14,7 @@ class TodoList extends Uniform
   template: """
     <div id="todo">
       <form>
-        <input name="name" />
-        <button class="add">Add</button>
+        <input name="item" />
       </form>
       <ul></ul>
     </div>
@@ -25,7 +24,7 @@ class TodoList extends Uniform
   #   @name = @find('input[name=name]')
   #   @list = @find('ul')
   elements:
-    name: 'input[name=name]'
+    item: 'input[name=item]'
     list: 'ul'
 
   # Delegate some events to selectors and events found
@@ -37,12 +36,12 @@ class TodoList extends Uniform
         # @ will always represent this instance *not* the
         # DOMElement triggering the click
         e.preventDefault()
-        @addItem(@name.val())
-        @name.val('').focus()
+        @addItem(@item.val())
+        @item.val('').focus()
 
   # This is a custom method
-  addItem: (name) ->
-    item = new TodoItem(name: name)
+  addItem: (item) ->
+    item = new TodoItem({list: @, item: item})
     @list.append(item.el)
 
   # This is also a custom method use for adding the todo
@@ -55,6 +54,7 @@ class TodoList extends Uniform
     $('body').append(@el)
     @addItem('Go to tescos')
     @addItem('Buy some food')
+    
 
 # Time to describe the individual todo items
 class TodoItem extends Uniform
@@ -67,7 +67,7 @@ class TodoItem extends Uniform
 
   # This method is run on construction, it prepends the name
   # to the <li> element in the template
-  init: -> @el.prepend(@name)
+  init: -> @el.prepend(@item)
 
   # Some more event delegation
   events:
@@ -76,6 +76,18 @@ class TodoItem extends Uniform
       # Uniform.destroy which is a method that undelegates
       # events and removes @el from the DOM
       click: 'destroy'
+
+  destroy: ->
+    next = @el.prev()
+    next = @el.siblings().first() unless next.length
+
+    if next.length
+      next.children('button').focus()
+    else
+      @list.item.focus()
+
+    super
+
 
 # And render :)
 jQuery -> (new TodoList).render()

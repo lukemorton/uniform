@@ -10,10 +10,10 @@
       TodoList.__super__.constructor.apply(this, arguments);
     }
 
-    TodoList.prototype.template = "<div id=\"todo\">\n  <form>\n    <input name=\"name\" />\n    <button class=\"add\">Add</button>\n  </form>\n  <ul></ul>\n</div>";
+    TodoList.prototype.template = "<div id=\"todo\">\n  <form>\n    <input name=\"item\" />\n  </form>\n  <ul></ul>\n</div>";
 
     TodoList.prototype.elements = {
-      name: 'input[name=name]',
+      item: 'input[name=item]',
       list: 'ul'
     };
 
@@ -21,16 +21,16 @@
       'form': {
         submit: function(e) {
           e.preventDefault();
-          this.addItem(this.name.val());
-          return this.name.val('').focus();
+          this.addItem(this.item.val());
+          return this.item.val('').focus();
         }
       }
     };
 
-    TodoList.prototype.addItem = function(name) {
-      var item;
+    TodoList.prototype.addItem = function(item) {
       item = new TodoItem({
-        name: name
+        list: this,
+        item: item
       });
       return this.list.append(item.el);
     };
@@ -56,13 +56,25 @@
     TodoItem.prototype.template = "<li>\n  <button class=\"remove\">Remove</button>\n</li>";
 
     TodoItem.prototype.init = function() {
-      return this.el.prepend(this.name);
+      return this.el.prepend(this.item);
     };
 
     TodoItem.prototype.events = {
       '.remove': {
         click: 'destroy'
       }
+    };
+
+    TodoItem.prototype.destroy = function() {
+      var next;
+      next = this.el.prev();
+      if (!next.length) next = this.el.siblings().first();
+      if (next.length) {
+        next.children('button').focus();
+      } else {
+        this.list.item.focus();
+      }
+      return TodoItem.__super__.destroy.apply(this, arguments);
     };
 
     return TodoItem;
