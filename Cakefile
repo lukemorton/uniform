@@ -57,12 +57,12 @@ task 'build', 'Build Uniform', ->
       fs.writeFileSync "#{dist}/uniform-#{version}.min.js", header + '\n' + code
       fs.writeFileSync "#{eg}/js/uniform.min.js", header + '\n' + code
 
+      invoke 'build:example'
 
 task 'clean', 'Delete distribution folder', ->
   exec "rm -rf #{dist}"
 
 task 'build:example', 'Build example', ->
-  invoke 'build'
   console.log 'Building example...'
   exec "coffee -c example/todo.coffee", ->
     console.log ' done.'
