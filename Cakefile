@@ -6,9 +6,10 @@ CoffeeScript = require 'coffee-script'
 src = './src'
 tmp = './tmp'
 dist = './dist'
+version = JSON.parse(fs.readFileSync('./package.json')).version
 
 header = """
-  // Uniform
+  // Uniform v#{version}
   // Written by Luke Morton, MIT licensed.
   // https://github.com/DrPheltRight/uniform
 """
