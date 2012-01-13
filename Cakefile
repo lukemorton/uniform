@@ -6,6 +6,8 @@ CoffeeScript = require 'coffee-script'
 src = './src'
 tmp = './tmp'
 dist = './dist'
+eg = './example'
+
 version = JSON.parse(fs.readFileSync('./package.json')).version
 
 header = """
@@ -53,6 +55,8 @@ task 'build', 'Build Uniform', ->
 
       code = uglify.gen_code uglify.ast_squeeze uglify.ast_mangle parser.parse code
       fs.writeFileSync "#{dist}/uniform-#{version}.min.js", header + '\n' + code
+      fs.writeFileSync "#{eg}/js/uniform.min.js", header + '\n' + code
+
 
 task 'clean', 'Delete distribution folder', ->
   exec "rm -rf #{dist}"
