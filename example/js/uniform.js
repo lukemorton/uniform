@@ -1,4 +1,4 @@
-// Uniform
+// Uniform v0.1.3
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -14,7 +14,23 @@
   var Uniform;
 
 Uniform = (function() {
-  var eventMap, previouslyMapped;
+  var delegated, nsEvent;
+
+  Uniform.uniqueCount = 0;
+
+  Uniform.prototype.uid = ++Uniform.uniqueCounter;
+
+  Uniform.prototype.el = null;
+
+  Uniform.prototype.template = '';
+
+  Uniform.prototype.$ = null;
+
+  Uniform.prototype.ns = 'Uniform';
+
+  Uniform.prototype.events = {};
+
+  delegated = false;
 
   function Uniform(settings) {
     var key, val;
@@ -29,58 +45,27 @@ Uniform = (function() {
     this.init();
   }
 
-  Uniform.prototype.el = null;
-
-  Uniform.prototype.template = '';
-
-  Uniform.prototype.$ = null;
-
-  Uniform.prototype.find = function(sel) {
-    return this.el.find(sel);
+  Uniform.prototype.init = function() {
+    return null;
   };
-
-  Uniform.prototype.init = (function() {});
-
-  Uniform.prototype.ns = 'Uniform';
-
-  Uniform.prototype.events = {};
 
   Uniform.prototype.buildTemplate = function() {
     if (typeof this.template === 'function') this.template = this.template();
     return this.$(this.template);
   };
 
-  previouslyMapped = false;
+  Uniform.prototype.find = function(sel) {
+    return this.el.find(sel);
+  };
 
-  eventMap = function(fn, events) {
-    var callback, eventType, previousMapped, selector;
-    var _this = this;
-    if (fn === 'off' && previouslyMapped === false) return;
-    for (selector in events) {
-      events = events[selector];
-      if (selector === '') {
-        for (eventType in events) {
-          callback = events[eventType];
-          if (typeof callback === 'string') callback = this[callback];
-          this.el[fn]("" + eventType + "." + this.ns, function() {
-            return callback.apply(_this, arguments);
-          });
-        }
-      } else {
-        for (eventType in events) {
-          callback = events[eventType];
-          if (typeof callback === 'string') callback = this[callback];
-          this.el[fn]("" + eventType + "." + this.ns, selector, function() {
-            return callback.apply(_this, arguments);
-          });
-        }
-      }
-    }
-    if (fn === 'off') previousMapped = false;
+  nsEvent = function(eventType) {
+    if (eventType == null) eventType = '';
+    return "" + eventType + "." + this.ns + this.uid;
   };
 
   Uniform.prototype.delegateEvents = function(eventsToDelegate) {
-    var events, selector;
+    var callback, eventType, events, selector, _ref;
+    var _this = this;
     if (eventsToDelegate == null) eventsToDelegate = this.events;
     if (eventsToDelegate !== this.events) {
       for (selector in eventsToDelegate) {
@@ -89,28 +74,53 @@ Uniform = (function() {
       }
     }
     this.undelegateEvents();
-    return eventMap.call(this, 'on', this.events);
+    _ref = this.events;
+    for (selector in _ref) {
+      events = _ref[selector];
+      if (selector === '') {
+        for (eventType in events) {
+          callback = events[eventType];
+          if (typeof callback === 'string') callback = this[callback];
+          this.el.on(nsEvent.call(this, eventType), function() {
+            return callback.apply(_this, arguments);
+          });
+        }
+      } else {
+        for (eventType in events) {
+          callback = events[eventType];
+          if (typeof callback === 'string') callback = this[callback];
+          this.el.on(nsEvent.call(this, eventType), selector, function() {
+            return callback.apply(_this, arguments);
+          });
+        }
+      }
+    }
+    delegated = true;
+    return this;
   };
 
   Uniform.prototype.undelegateEvents = function() {
-    return eventMap.call(this, 'off', this.events);
+    var delegate;
+    if (delegated != null) this.el.off(nsEvent.call(this));
+    delegate = false;
+    return this;
   };
 
   Uniform.prototype.cacheElements = function() {
-    var name, sel, _ref, _results;
+    var name, sel, _ref;
     _ref = this.elements;
-    _results = [];
     for (name in _ref) {
       sel = _ref[name];
-      _results.push(this[name] = this.find(sel));
+      this[name] = this.find(sel);
     }
-    return _results;
+    return this;
   };
 
   Uniform.prototype.destroy = function() {
     this.undelegateEvents();
     this.el.remove();
-    return this.el = null;
+    this.el = null;
+    return this;
   };
 
   return Uniform;
