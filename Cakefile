@@ -46,7 +46,6 @@ task 'build', 'Build Uniform', ->
       });
     """
 
-    version = JSON.parse(fs.readFileSync('./package.json')).version
     console.log "Building Uniform #{version}"
     
     exec "mkdir -p #{dist}", ->
