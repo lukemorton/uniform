@@ -71,4 +71,4 @@ task 'clean', 'Delete distribution folder', ->
 
 task 'build:example', 'Build example', ->
   console.log 'Building examples'
-  exec "coffee -c #{eg}/todo/todo.coffee"
+  exec "coffee -c #{eg}/*/*.coffee"
