@@ -6,7 +6,8 @@ CoffeeScript = require 'coffee-script'
 src = './src'
 tmp = './tmp'
 dist = './dist'
-eg = './example'
+eg = './examples'
+todo = "#{eg}/todo"
 
 version = JSON.parse(fs.readFileSync('./package.json')).version
 
@@ -51,11 +52,17 @@ task 'build', 'Build Uniform', ->
     console.log "Building Uniform #{version}"
     
     exec "mkdir -p #{dist}", ->
-      fs.writeFileSync "#{dist}/uniform-#{version}.js", header + '\n' + code
+      fs.writeFileSync path, header + '\n' + code for path in [
+        "#{dist}/uniform-#{version}.js"
+        "#{eg}/lib/uniform.js"
+      ]
 
       code = uglify.gen_code uglify.ast_squeeze uglify.ast_mangle parser.parse code
-      fs.writeFileSync "#{dist}/uniform-#{version}.min.js", header + '\n' + code
-      fs.writeFileSync "#{eg}/js/uniform.min.js", header + '\n' + code
+
+      fs.writeFileSync path, header + '\n' + code for path in [
+        "#{dist}/uniform-#{version}.min.js"
+        "#{eg}/lib/uniform.min.js"
+      ]
 
       invoke 'build:example'
 
@@ -63,6 +70,5 @@ task 'clean', 'Delete distribution folder', ->
   exec "rm -rf #{dist}"
 
 task 'build:example', 'Build example', ->
-  console.log 'Building example...'
-  exec "coffee -c example/todo.coffee", ->
-    console.log ' done.'
+  console.log 'Building examples'
+  exec "coffee -c #{eg}/todo/todo.coffee"
