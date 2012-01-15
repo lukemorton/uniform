@@ -35,7 +35,7 @@ class ContactForm extends Uniform
   sendResponse: (e) ->
     e.preventDefault()
     @btn.text('Sending...')
-    $.post '/contact', msg: @msg, =>
+    $.post 'index.html', msg: @msg, =>
       @msg.val('')
       @btn.text('Send')
 
