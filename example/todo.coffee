@@ -31,7 +31,7 @@ class TodoList extends Uniform
   # within @el
   events:
     # Bind all form submits
-    'form':
+    form:
       submit: (e) ->
         # @ will always represent this instance *not* the
         # DOMElement triggering the click
@@ -52,6 +52,8 @@ class TodoList extends Uniform
     # constructor like so:
     #   new TodoList(el: $('#todo'))
     $('body').append(@el)
+
+    # Add some examples
     @addItem('Go to tescos')
     @addItem('Buy some food')
 
@@ -82,8 +84,10 @@ class TodoItem extends Uniform
     next = @el.siblings().first() unless next.length
 
     if next.length
+      # Focus another list items remove button if possible
       next.children('button').focus()
     else
+      # Otherwise we put focus back to the input box
       @list.item.focus()
 
     super

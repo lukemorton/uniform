@@ -18,7 +18,7 @@
     };
 
     TodoList.prototype.events = {
-      'form': {
+      form: {
         submit: function(e) {
           var val;
           e.preventDefault();
