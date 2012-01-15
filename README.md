@@ -41,7 +41,12 @@ class ContactForm extends Uniform
 
 # Initialise
 jQuery -> new ContactForm
+```
 
+You can also use your ViewControllers on elements already in
+the DOM like so:
+
+``` coffeescript
 # Or use on an existing element
 jQuery -> new ContactForm(el: $('#contact'))
 ```
