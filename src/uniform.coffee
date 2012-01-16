@@ -8,10 +8,10 @@
 class Uniform
   
   # Unique counter
-  @uniqueCount = 0
+  @uniqueCounter = 0
 
   # Unique ID for this Uniform
-  uid: ++Uniform.uniqueCounter
+  uid: null
   
   # DOM element, that this object represents
   el: null
@@ -43,6 +43,7 @@ class Uniform
   constructor: (settings) ->
     @[key] = val for key, val of settings
     @$ = require 'jquery' unless @$?
+    @uid or= ++Uniform.uniqueCounter
     @el = @buildTemplate() unless @el and @el.length?
     @cacheElements()
     @delegateEvents()
