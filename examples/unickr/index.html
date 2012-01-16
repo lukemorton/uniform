@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+	<head>
+		<title>uNickr</title>
+	</head>
+	<body>
+		<h1>uNickr d'picktr</h1>
+		<div id="unickr">
+			<form action="/nick" method="post">
+				<p>
+					<label for="url">URL of image to nick:</label>
+					<input id="url" />
+				</p>
+				<p>
+					<button>Nick it</button>
+				</p>
+			</form>
+
+			<div id="gallery">
+				You have nothing in your gallery at the moment.
+			</div>
+		</div>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/uniform.min.js"></script>
+		<script src="unickr.js"></script>
+	</body>
+</html>
