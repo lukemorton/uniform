@@ -45,8 +45,8 @@ class Uniform
   #  - @init() is called
   constructor: (settings) ->
     @[key] = val for key, val of settings
-    @$ = require 'jquery' unless @$?
     @uid or= ++Uniform.uniqueCounter
+    @$ or= require 'jquery'
     @el = @buildTemplate() unless @el and @el.length?
     @cacheElements()
     @delegateEvents()
