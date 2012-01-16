@@ -29,7 +29,7 @@ class Uniform
   events: {}
 
   # Have we previously delegated events?
-  delegated = false
+  hasDelegated: false
 
   # The constructor takes one argument, an object, which can
   # override and append properties before initialising.
@@ -84,13 +84,13 @@ class Uniform
           callback = @[callback] if typeof callback is 'string'
           @el.on(nsEvent.call(@, eventType), selector, => callback.apply(@, arguments))
 
-    delegated = true
+    hasDelegated = true
     return @
 
   # Undelegate all events
   undelegateEvents: ->
-    @el.off(nsEvent.call(@)) if delegated?
-    delegate = false
+    @el.off(nsEvent.call(@)) if hasDelegated
+    hasDelegated = false
     return @
   
   # Cache elements relative to @elements
