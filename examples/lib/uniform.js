@@ -1,4 +1,4 @@
-// Uniform v0.1.4
+// Uniform v0.1.5
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -14,11 +14,11 @@
   var Uniform;
 
 Uniform = (function() {
-  var delegated, nsEvent;
+  var nsEvent;
 
-  Uniform.uniqueCount = 0;
+  Uniform.uniqueCounter = 0;
 
-  Uniform.prototype.uid = ++Uniform.uniqueCounter;
+  Uniform.prototype.uid = null;
 
   Uniform.prototype.el = null;
 
@@ -30,7 +30,9 @@ Uniform = (function() {
 
   Uniform.prototype.events = {};
 
-  delegated = false;
+  Uniform.prototype.elements = {};
+
+  Uniform.prototype.hasDelegated = false;
 
   function Uniform(settings) {
     var key, val;
@@ -38,7 +40,8 @@ Uniform = (function() {
       val = settings[key];
       this[key] = val;
     }
-    if (this.$ == null) this.$ = require('jquery');
+    this.uid || (this.uid = ++Uniform.uniqueCounter);
+    this.$ || (this.$ = require('jquery'));
     if (!(this.el && (this.el.length != null))) this.el = this.buildTemplate();
     this.cacheElements();
     this.delegateEvents();
@@ -64,7 +67,7 @@ Uniform = (function() {
   };
 
   Uniform.prototype.delegateEvents = function(eventsToDelegate) {
-    var callback, eventType, events, selector, _ref;
+    var callback, eventType, events, hasDelegated, selector, _ref;
     var _this = this;
     if (eventsToDelegate == null) eventsToDelegate = this.events;
     if (eventsToDelegate !== this.events) {
@@ -95,14 +98,14 @@ Uniform = (function() {
         }
       }
     }
-    delegated = true;
+    hasDelegated = true;
     return this;
   };
 
   Uniform.prototype.undelegateEvents = function() {
-    var delegate;
-    if (delegated != null) this.el.off(nsEvent.call(this));
-    delegate = false;
+    var hasDelegated;
+    if (hasDelegated) this.el.off(nsEvent.call(this));
+    hasDelegated = false;
     return this;
   };
 
