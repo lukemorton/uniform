@@ -28,6 +28,9 @@ class Uniform
   # The event map
   events: {}
 
+  # The elements map
+  elements: {}
+
   # Have we previously delegated events?
   hasDelegated: false
 
