@@ -23,9 +23,11 @@
     };
 
     Blog.prototype.init = function() {
-      return this.el.prepend((new BlogForm({
+      var form;
+      form = new BlogForm({
         blog: this
-      })).el).appendTo('body');
+      });
+      return this.el.prepend(form.el).appendTo('body');
     };
 
     return Blog;
