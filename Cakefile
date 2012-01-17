@@ -1,6 +1,5 @@
 fs = require 'fs'
 {exec} = require 'child_process'
-CoffeeScript = require 'coffee-script'
 {parser, uglify} = require 'uglify-js'
 
 src = './src'
