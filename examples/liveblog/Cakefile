@@ -10,11 +10,11 @@ compiled = []
 compiledFile = 'templates.js'
 
 task 'build', 'Build templates for Hogan', ->
-	tmplFiles.forEach (file) ->
-		name = path.basename(file, '.mustache')
-		tmpl = fs.readFileSync(file, 'utf-8')
-		cmpl = hogan.compile(tmpl, {asString:true})
-		compiled.push("'#{name}': new Hogan.Template(#{cmpl})")
+  tmplFiles.forEach (file) ->
+    name = path.basename(file, '.mustache')
+    tmpl = fs.readFileSync(file, 'utf-8')
+    cmpl = hogan.compile(tmpl, {asString:true})
+    compiled.push("'#{name}': new Hogan.Template(#{cmpl})")
 
-	fs.writeFileSync(compiledFile, 'Hogan.TemplateCache = {' + compiled.join(',\n') + '};\n')
-	exec 'coffee -c *.coffee'
+  fs.writeFileSync(compiledFile, 'Hogan.TemplateCache = {' + compiled.join(',\n') + '};\n')
+  exec 'coffee -c *.coffee'
