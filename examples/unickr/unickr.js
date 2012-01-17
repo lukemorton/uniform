@@ -49,7 +49,7 @@
     }
 
     Asset.prototype.template = function() {
-      return "<div class=\"asset\">\n  <img src=\"{{src}}\" />\n</div>".replace('{{src}}', this.url);
+      return "<div class=\"asset\">\n  <img src=\"{{@url}}\" />\n</div>";
     };
 
     return Asset;
