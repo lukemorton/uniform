@@ -26,12 +26,10 @@
       }
     };
 
-    App.prototype.neverNicked = true;
-
     App.prototype.nickUrl = function(url) {
-      if (this.neverNicked) {
+      if (this.hasNicked == null) {
         this.gallery.html('');
-        this.neverNicked = false;
+        this.hasNicked = true;
       }
       return new Asset({
         url: url
@@ -50,16 +48,8 @@
       Asset.__super__.constructor.apply(this, arguments);
     }
 
-    Asset.prototype.url = null;
-
-    Asset.prototype.template = "<div class=\"asset\">\n	<img />\n</div>";
-
-    Asset.prototype.elements = {
-      img: 'img'
-    };
-
-    Asset.prototype.init = function() {
-      return this.img.attr('src', this.url);
+    Asset.prototype.template = function() {
+      return "<div class=\"asset\">\n  <img src=\"{{src}}\" />\n</div>".replace('{{src}}', this.url);
     };
 
     return Asset;
