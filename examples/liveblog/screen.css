@@ -1,0 +1,38 @@
+body {
+	width: 45em;
+	margin: 3em auto;
+}
+
+h1 {
+	
+}
+
+h2 {
+	border-left: 2px solid #ccc;
+	padding-left: 1em;
+	margin-left: -1em;
+}
+
+form {
+	background: #f7f7f7;
+	padding: 1em;
+	margin-bottom: 1em;
+}
+
+form h2 {
+	border-left: none;
+	border-bottom: 2px solid #ccc;
+	margin: 0;
+	padding: 0;
+}
+
+label {
+	display: block;
+}
+
+input, textarea {
+	width: 42em;
+	border: 1px solid #aaa;
+	font: 1em arial;
+	padding: 0.2em;
+}
