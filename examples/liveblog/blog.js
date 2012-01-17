@@ -10,15 +10,7 @@
       Blog.__super__.constructor.apply(this, arguments);
     }
 
-    Blog.prototype.posts = [
-      {
-        title: 'Second blog title',
-        content: '<p>Another paragraph.</p>'
-      }, {
-        title: 'A blog title',
-        content: '<p>A paragraph.</p>'
-      }
-    ];
+    Blog.prototype.posts = localStorage.posts ? JSON.parse(localStorage.posts) : [];
 
     Blog.prototype.elements = {
       header: 'h1'
@@ -56,14 +48,19 @@
     BlogForm.prototype.events = {
       '': {
         submit: function(e) {
+          var newPost;
           e.preventDefault();
-          this.blog.header.after(Hogan.TemplateCache.post.render({
+          newPost = {
             title: this.title.val(),
             content: this.content.val()
-          }));
-          return [this.title, this.content].forEach(function(el) {
+          };
+          this.blog.header.after(Hogan.TemplateCache.post.render(newPost));
+          this.blog.posts.push(newPost);
+          localStorage.posts = JSON.stringify(this.blog.posts);
+          [this.title, this.content].forEach(function(el) {
             return el.val('');
           });
+          return this.title.focus();
         }
       }
     };
