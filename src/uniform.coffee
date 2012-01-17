@@ -66,7 +66,7 @@ class Uniform
   find: (sel) -> @el.find(sel)
 
   # Build a namespace eventType
-  nsEvent =  (eventType = '') -> "#{eventType}.#{@ns}#{@uid}"
+  nsEvent = (eventType = '') -> "#{eventType}.#{@ns}#{@uid}"
 
   # Delegate events. Optionally takes a map of new events to
   # add to the object's previously defined events.
