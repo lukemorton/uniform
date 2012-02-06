@@ -22,7 +22,7 @@ class ContactForm extends Uniform
       'submit': 'sendResponse'
 
   # Do the sending :)
-  sendResponse: (e) ->
+  sendResponse: (el, e) ->
     e.preventDefault()
     @btn.text('Sending...')
     $.post 'index.html', msg: @msg, =>

@@ -71,6 +71,8 @@ class Uniform
   # Delegate events. Optionally takes a map of new events to
   # add to the object's previously defined events.
   delegateEvents: (eventsToDelegate = @events) ->
+    scope = @
+
     unless eventsToDelegate is @events
       # Merge new events to @events
       @events[selector] = events for selector, events of eventsToDelegate
@@ -82,12 +84,18 @@ class Uniform
         for eventType, callback of events
           do (eventType, callback) =>
             callback = @[callback] if typeof callback is 'string'
-            @el.on(nsEvent.call(@, eventType), => callback.apply(@, arguments)) 
+            @el.on nsEvent.call(@, eventType), ->
+              args = Array.prototype.slice.call(arguments)
+              args.unshift(@)
+              callback.apply(scope, args)
       else
         for eventType, callback of events
           do (eventType, callback) =>
             callback = @[callback] if typeof callback is 'string'
-            @el.on(nsEvent.call(@, eventType), selector, => callback.apply(@, arguments))
+            @el.on nsEvent.call(@, eventType), selector, ->
+              args = Array.prototype.slice.call(arguments)
+              args.unshift(@)
+              callback.apply(scope, args)
 
     hasDelegated = true
     return @

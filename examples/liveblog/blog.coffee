@@ -27,7 +27,7 @@ class BlogForm extends Uniform
   # On submit we want to add the new blog post
   events:
     '':
-      submit: (e) ->
+      submit: (el, e) ->
         e.preventDefault()
         
         newPost =

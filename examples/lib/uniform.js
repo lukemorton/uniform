@@ -67,9 +67,10 @@ Uniform = (function() {
   };
 
   Uniform.prototype.delegateEvents = function(eventsToDelegate) {
-    var callback, eventType, events, hasDelegated, selector, _fn, _fn2, _ref,
+    var callback, eventType, events, hasDelegated, scope, selector, _fn, _fn2, _ref,
       _this = this;
     if (eventsToDelegate == null) eventsToDelegate = this.events;
+    scope = this;
     if (eventsToDelegate !== this.events) {
       for (selector in eventsToDelegate) {
         events = eventsToDelegate[selector];
@@ -84,7 +85,10 @@ Uniform = (function() {
         _fn = function(eventType, callback) {
           if (typeof callback === 'string') callback = _this[callback];
           return _this.el.on(nsEvent.call(_this, eventType), function() {
-            return callback.apply(_this, arguments);
+            var args;
+            args = Array.prototype.slice.call(arguments);
+            args.unshift(this);
+            return callback.apply(scope, args);
           });
         };
         for (eventType in events) {
@@ -95,7 +99,10 @@ Uniform = (function() {
         _fn2 = function(eventType, callback) {
           if (typeof callback === 'string') callback = _this[callback];
           return _this.el.on(nsEvent.call(_this, eventType), selector, function() {
-            return callback.apply(_this, arguments);
+            var args;
+            args = Array.prototype.slice.call(arguments);
+            args.unshift(this);
+            return callback.apply(scope, args);
           });
         };
         for (eventType in events) {

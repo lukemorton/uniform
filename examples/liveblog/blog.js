@@ -50,7 +50,7 @@
 
     BlogForm.prototype.events = {
       '': {
-        submit: function(e) {
+        submit: function(el, e) {
           var newPost;
           e.preventDefault();
           newPost = {

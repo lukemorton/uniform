@@ -20,7 +20,7 @@
 
     App.prototype.events = {
       form: {
-        submit: function(e) {
+        submit: function(el, e) {
           e.preventDefault();
           return this.nickUrl(this.url.val()).el.appendTo(this.gallery);
         }

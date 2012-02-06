@@ -32,7 +32,7 @@ class TodoList extends Uniform
   events:
     # Bind all form submits
     form:
-      submit: (e) ->
+      submit: (el, e) ->
         # @ will always represent this instance *not* the
         # DOMElement triggering the click
         e.preventDefault()

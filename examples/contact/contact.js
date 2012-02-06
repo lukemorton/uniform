@@ -28,7 +28,7 @@
       }
     };
 
-    ContactForm.prototype.sendResponse = function(e) {
+    ContactForm.prototype.sendResponse = function(el, e) {
       var _this = this;
       e.preventDefault();
       this.btn.text('Sending...');

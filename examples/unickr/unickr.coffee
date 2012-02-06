@@ -7,7 +7,7 @@ class App extends Uniform
 
   events:
     form:
-      submit: (e) ->
+      submit: (el, e) ->
         e.preventDefault()
         @nickUrl(@url.val()).el.appendTo(@gallery)
 
