@@ -1,10 +1,11 @@
 (function() {
-  var ContactForm;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var ContactForm,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  ContactForm = (function() {
+  ContactForm = (function(_super) {
 
-    __extends(ContactForm, Uniform);
+    __extends(ContactForm, _super);
 
     function ContactForm() {
       ContactForm.__super__.constructor.apply(this, arguments);
@@ -41,7 +42,7 @@
 
     return ContactForm;
 
-  })();
+  })(Uniform);
 
   jQuery(function() {
     return new ContactForm;
