@@ -80,12 +80,14 @@ class Uniform
     for selector, events of @events
       if selector is ''
         for eventType, callback of events
-          callback = @[callback] if typeof callback is 'string'
-          @el.on(nsEvent.call(@, eventType), => callback.apply(@, arguments)) 
+          do (eventType, callback) =>
+            callback = @[callback] if typeof callback is 'string'
+            @el.on(nsEvent.call(@, eventType), => callback.apply(@, arguments)) 
       else
         for eventType, callback of events
-          callback = @[callback] if typeof callback is 'string'
-          @el.on(nsEvent.call(@, eventType), selector, => callback.apply(@, arguments))
+          do (eventType, callback) =>
+            callback = @[callback] if typeof callback is 'string'
+            @el.on(nsEvent.call(@, eventType), selector, => callback.apply(@, arguments))
 
     hasDelegated = true
     return @
