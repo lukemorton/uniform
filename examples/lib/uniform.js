@@ -1,4 +1,4 @@
-// Uniform v0.1.6
+// Uniform v0.2.0
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
