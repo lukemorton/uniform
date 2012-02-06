@@ -67,8 +67,8 @@ Uniform = (function() {
   };
 
   Uniform.prototype.delegateEvents = function(eventsToDelegate) {
-    var callback, eventType, events, hasDelegated, selector, _ref;
-    var _this = this;
+    var callback, eventType, events, hasDelegated, selector, _fn, _fn2, _ref,
+      _this = this;
     if (eventsToDelegate == null) eventsToDelegate = this.events;
     if (eventsToDelegate !== this.events) {
       for (selector in eventsToDelegate) {
@@ -81,20 +81,26 @@ Uniform = (function() {
     for (selector in _ref) {
       events = _ref[selector];
       if (selector === '') {
-        for (eventType in events) {
-          callback = events[eventType];
-          if (typeof callback === 'string') callback = this[callback];
-          this.el.on(nsEvent.call(this, eventType), function() {
+        _fn = function(eventType, callback) {
+          if (typeof callback === 'string') callback = _this[callback];
+          return _this.el.on(nsEvent.call(_this, eventType), function() {
             return callback.apply(_this, arguments);
           });
+        };
+        for (eventType in events) {
+          callback = events[eventType];
+          _fn(eventType, callback);
         }
       } else {
-        for (eventType in events) {
-          callback = events[eventType];
-          if (typeof callback === 'string') callback = this[callback];
-          this.el.on(nsEvent.call(this, eventType), selector, function() {
+        _fn2 = function(eventType, callback) {
+          if (typeof callback === 'string') callback = _this[callback];
+          return _this.el.on(nsEvent.call(_this, eventType), selector, function() {
             return callback.apply(_this, arguments);
           });
+        };
+        for (eventType in events) {
+          callback = events[eventType];
+          _fn2(eventType, callback);
         }
       }
     }
