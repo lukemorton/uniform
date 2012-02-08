@@ -1,4 +1,4 @@
-// Uniform v0.2.1
+// Uniform v0.2.2
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -14,7 +14,7 @@
   var Uniform;
 
 Uniform = (function() {
-  var nsEvent;
+  var isArray, normaliseEventObject, nsEvent;
 
   Uniform.uniqueCounter = 0;
 
@@ -44,6 +44,7 @@ Uniform = (function() {
     this.$ || (this.$ = require('jquery'));
     if (!(this.el && (this.el.length != null))) this.el = this.buildTemplate();
     this.cacheElements();
+    this.events = normaliseEventObject(this.events);
     if ((settings != null ? settings.events : void 0) != null) {
       this.delegateEvents(settings.events);
       delete settings.events;
@@ -71,48 +72,75 @@ Uniform = (function() {
     return "" + eventType + "." + this.ns + this.uid;
   };
 
+  isArray = function(arg) {
+    if (Array.isArray != null) return Array.isArray(arg);
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+
+  normaliseEventObject = function(unEvents, nEvents) {
+    var callback, eventType, events, selector, _base;
+    if (nEvents == null) nEvents = {};
+    for (selector in unEvents) {
+      events = unEvents[selector];
+      for (eventType in events) {
+        callback = events[eventType];
+        nEvents[selector] || (nEvents[selector] = {});
+        (_base = nEvents[selector])[eventType] || (_base[eventType] = []);
+        if (isArray(callback)) {
+          nEvents[selector][eventType].concat(callback);
+        } else {
+          nEvents[selector][eventType].push(callback);
+        }
+      }
+    }
+    return nEvents;
+  };
+
   Uniform.prototype.delegateEvents = function(eventsToDelegate) {
-    var callback, eventType, events, hasDelegated, scope, selector, _fn, _fn2, _ref,
+    var callback, callbacks, eventType, events, hasDelegated, scope, selector, _fn, _fn2, _i, _j, _len, _len2, _ref,
       _this = this;
     if (eventsToDelegate == null) eventsToDelegate = this.events;
     scope = this;
     if (eventsToDelegate !== this.events) {
-      for (selector in eventsToDelegate) {
-        events = eventsToDelegate[selector];
-        this.events[selector] = events;
-      }
+      normaliseEventObject(eventsToDelegate, this.events);
     }
     this.undelegateEvents();
     _ref = this.events;
     for (selector in _ref) {
       events = _ref[selector];
       if (selector === '') {
-        _fn = function(eventType, callback) {
-          if (typeof callback === 'string') callback = _this[callback];
-          return _this.el.on(nsEvent.call(_this, eventType), function() {
-            var args;
-            args = Array.prototype.slice.call(arguments);
-            args.unshift(this);
-            return callback.apply(scope, args);
-          });
-        };
         for (eventType in events) {
-          callback = events[eventType];
-          _fn(eventType, callback);
+          callbacks = events[eventType];
+          _fn = function(eventType, callback) {
+            if (typeof callback === 'string') callback = _this[callback];
+            return _this.el.on(nsEvent.call(_this, eventType), function() {
+              var args;
+              args = Array.prototype.slice.call(arguments);
+              args.unshift(this);
+              return callback.apply(scope, args);
+            });
+          };
+          for (_i = 0, _len = callbacks.length; _i < _len; _i++) {
+            callback = callbacks[_i];
+            _fn(eventType, callback);
+          }
         }
       } else {
-        _fn2 = function(eventType, callback) {
-          if (typeof callback === 'string') callback = _this[callback];
-          return _this.el.on(nsEvent.call(_this, eventType), selector, function() {
-            var args;
-            args = Array.prototype.slice.call(arguments);
-            args.unshift(this);
-            return callback.apply(scope, args);
-          });
-        };
         for (eventType in events) {
-          callback = events[eventType];
-          _fn2(eventType, callback);
+          callbacks = events[eventType];
+          _fn2 = function(eventType, callback) {
+            if (typeof callback === 'string') callback = _this[callback];
+            return _this.el.on(nsEvent.call(_this, eventType), selector, function() {
+              var args;
+              args = Array.prototype.slice.call(arguments);
+              args.unshift(this);
+              return callback.apply(scope, args);
+            });
+          };
+          for (_j = 0, _len2 = callbacks.length; _j < _len2; _j++) {
+            callback = callbacks[_j];
+            _fn2(eventType, callback);
+          }
         }
       }
     }
