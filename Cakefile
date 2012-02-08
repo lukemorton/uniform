@@ -65,6 +65,17 @@ task 'build', 'Build Uniform', ->
 
       invoke 'build:example'
 
+task 'watch', 'Build on modification', ->
+  waiting = false
+  fs.watch src, (event, filename) ->
+    return unless filename.indexOf('.coffee') > -1
+
+    if waiting
+      console.log('Waiting')
+    else
+      waiting = setTimeout((-> waiting = false), 2000)
+      invoke('build')
+
 task 'clean', 'Delete distribution folder', ->
   exec "rm -rf #{dist}"
 
