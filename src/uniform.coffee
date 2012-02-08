@@ -44,12 +44,24 @@ class Uniform
   #  - @events are delegated
   #  - @init() is called
   constructor: (settings) ->
-    @[key] = val for key, val of settings
+    for key, val of settings
+      # Merge all but events
+      @[key] = val unless key is 'events'
+
     @uid or= ++Uniform.uniqueCounter
     @$ or= require 'jquery'
     @el = @buildTemplate() unless @el and @el.length?
     @cacheElements()
-    @delegateEvents()
+
+    # We want to append events defined here to previously
+    # defined ones, we don't want the foreach to overwrite
+    # the originals
+    if settings?.events?
+      @delegateEvents(settings.events)
+      delete settings.events
+    else
+      @delegateEvents()
+
     @init()
 
   # By default @init() does nothing

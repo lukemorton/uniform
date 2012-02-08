@@ -1,4 +1,4 @@
-// Uniform v0.2.0
+// Uniform v0.2.1
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -38,13 +38,18 @@ Uniform = (function() {
     var key, val;
     for (key in settings) {
       val = settings[key];
-      this[key] = val;
+      if (key !== 'events') this[key] = val;
     }
     this.uid || (this.uid = ++Uniform.uniqueCounter);
     this.$ || (this.$ = require('jquery'));
     if (!(this.el && (this.el.length != null))) this.el = this.buildTemplate();
     this.cacheElements();
-    this.delegateEvents();
+    if ((settings != null ? settings.events : void 0) != null) {
+      this.delegateEvents(settings.events);
+      delete settings.events;
+    } else {
+      this.delegateEvents();
+    }
     this.init();
   }
 
