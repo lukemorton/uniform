@@ -53,6 +53,9 @@ class Uniform
     @el = @buildTemplate() unless @el and @el.length?
     @cacheElements()
 
+    # Normalise events object first
+    @events = normaliseEventObject(@events)
+
     # We want to append events defined here to previously
     # defined ones, we don't want the foreach to overwrite
     # the originals
@@ -80,34 +83,54 @@ class Uniform
   # Build a namespace eventType
   nsEvent = (eventType = '') -> "#{eventType}.#{@ns}#{@uid}"
 
+  # Is array
+  isArray = (arg) ->
+    return Array.isArray(arg) if Array.isArray?
+    return Object.prototype.toString.call(arg) == '[object Array]'
+
+  # Normalise an event object, optionally merging it with an
+  # already normalised object
+  normaliseEventObject = (unEvents, nEvents = {}) ->
+    for selector, events of unEvents
+      for eventType, callback of events
+        nEvents[selector] or= {}
+        nEvents[selector][eventType] or= []
+
+        if isArray(callback)
+          nEvents[selector][eventType].concat(callback)
+        else
+          nEvents[selector][eventType].push(callback)
+    return nEvents
+
   # Delegate events. Optionally takes a map of new events to
   # add to the object's previously defined events.
   delegateEvents: (eventsToDelegate = @events) ->
     scope = @
 
     unless eventsToDelegate is @events
-      # Merge new events to @events
-      @events[selector] = events for selector, events of eventsToDelegate
-    
+      normaliseEventObject(eventsToDelegate, @events)
+        
     @undelegateEvents()
 
     for selector, events of @events
       if selector is ''
-        for eventType, callback of events
-          do (eventType, callback) =>
-            callback = @[callback] if typeof callback is 'string'
-            @el.on nsEvent.call(@, eventType), ->
-              args = Array.prototype.slice.call(arguments)
-              args.unshift(@)
-              callback.apply(scope, args)
+        for eventType, callbacks of events
+          for callback in callbacks
+            do (eventType, callback) =>
+              callback = @[callback] if typeof callback is 'string'
+              @el.on nsEvent.call(@, eventType), ->
+                args = Array.prototype.slice.call(arguments)
+                args.unshift(@)
+                callback.apply(scope, args)
       else
-        for eventType, callback of events
-          do (eventType, callback) =>
-            callback = @[callback] if typeof callback is 'string'
-            @el.on nsEvent.call(@, eventType), selector, ->
-              args = Array.prototype.slice.call(arguments)
-              args.unshift(@)
-              callback.apply(scope, args)
+        for eventType, callbacks of events
+          for callback in callbacks
+            do (eventType, callback) =>
+              callback = @[callback] if typeof callback is 'string'
+              @el.on nsEvent.call(@, eventType), selector, ->
+                args = Array.prototype.slice.call(arguments)
+                args.unshift(@)
+                callback.apply(scope, args)
 
     hasDelegated = true
     return @
