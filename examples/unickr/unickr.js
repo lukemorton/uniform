@@ -50,7 +50,7 @@
     }
 
     Asset.prototype.template = function() {
-      return "<div class=\"asset\">\n  <img src=\"{{@url}}\" />\n</div>";
+      return "<div class=\"asset\">\n  <img src=\"" + this.url + "\" />\n</div>";
     };
 
     return Asset;

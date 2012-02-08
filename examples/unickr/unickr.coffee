@@ -21,7 +21,7 @@ class Asset extends Uniform
   template: ->
     """
       <div class="asset">
-        <img src="{{@url}}" />
+        <img src="#{@url}" />
       </div>
     """
 
