@@ -61,7 +61,6 @@ class Uniform
     # the originals
     if settings?.events?
       @delegateEvents(settings.events)
-      delete settings.events
     else
       @delegateEvents()
 
