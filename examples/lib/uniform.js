@@ -1,20 +1,28 @@
-// Uniform v0.2.2
+// Uniform v0.2.3
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
+  var context = this,
+    old = context.Uniform;
+
   if (typeof define == 'function' && typeof define.amd == 'object') {
     define(['require'], definition);
   } else {
-    this.Uniform = definition(function (path) {
+    context.Uniform = definition(function (path) {
       // This is a fake require for jQuery
-      return this['jQuery'];
+      return context['jQuery'];
     });
+
+    context.Uniform.noConflict = function () {
+      context.Uniform = old;
+      return this;
+    };
   }
 }(function(require) {
   var Uniform;
 
 Uniform = (function() {
-  var isArray, normaliseEventObject, nsEvent;
+  var delegateEvent, isArray, normaliseEventObject, nsEvent;
 
   Uniform.uniqueCounter = 0;
 
@@ -47,7 +55,6 @@ Uniform = (function() {
     this.events = normaliseEventObject(this.events);
     if ((settings != null ? settings.events : void 0) != null) {
       this.delegateEvents(settings.events);
-      delete settings.events;
     } else {
       this.delegateEvents();
     }
@@ -87,7 +94,7 @@ Uniform = (function() {
         nEvents[selector] || (nEvents[selector] = {});
         (_base = nEvents[selector])[eventType] || (_base[eventType] = []);
         if (isArray(callback)) {
-          nEvents[selector][eventType].concat(callback);
+          nEvents[selector][eventType] = nEvents[selector][eventType].concat(callback);
         } else {
           nEvents[selector][eventType].push(callback);
         }
@@ -96,9 +103,37 @@ Uniform = (function() {
     return nEvents;
   };
 
+  delegateEvent = function(el, eventType, selector, callbacks) {
+    var callback, delegate, _i, _len, _results;
+    delegate = (function(el, eventType, selector) {
+      if (selector === '') {
+        return function(callback) {
+          return el.on(eventType, callback);
+        };
+      } else {
+        return function(callback) {
+          return el.on(eventType, selector, callback);
+        };
+      }
+    })(el, eventType, selector);
+    _results = [];
+    for (_i = 0, _len = callbacks.length; _i < _len; _i++) {
+      callback = callbacks[_i];
+      if (typeof callback === 'string') callback = this[callback];
+      _results.push((function(callback) {
+        return delegate(function() {
+          var args;
+          args = Array.prototype.slice.call(arguments);
+          args.unshift(this);
+          return callback.apply(scope, args);
+        });
+      })(callback));
+    }
+    return _results;
+  };
+
   Uniform.prototype.delegateEvents = function(eventsToDelegate) {
-    var callback, callbacks, eventType, events, hasDelegated, scope, selector, _fn, _fn2, _i, _j, _len, _len2, _ref,
-      _this = this;
+    var callbacks, eventType, events, hasDelegated, scope, selector, _ref;
     if (eventsToDelegate == null) eventsToDelegate = this.events;
     scope = this;
     if (eventsToDelegate !== this.events) {
@@ -108,40 +143,9 @@ Uniform = (function() {
     _ref = this.events;
     for (selector in _ref) {
       events = _ref[selector];
-      if (selector === '') {
-        for (eventType in events) {
-          callbacks = events[eventType];
-          _fn = function(eventType, callback) {
-            if (typeof callback === 'string') callback = _this[callback];
-            return _this.el.on(nsEvent.call(_this, eventType), function() {
-              var args;
-              args = Array.prototype.slice.call(arguments);
-              args.unshift(this);
-              return callback.apply(scope, args);
-            });
-          };
-          for (_i = 0, _len = callbacks.length; _i < _len; _i++) {
-            callback = callbacks[_i];
-            _fn(eventType, callback);
-          }
-        }
-      } else {
-        for (eventType in events) {
-          callbacks = events[eventType];
-          _fn2 = function(eventType, callback) {
-            if (typeof callback === 'string') callback = _this[callback];
-            return _this.el.on(nsEvent.call(_this, eventType), selector, function() {
-              var args;
-              args = Array.prototype.slice.call(arguments);
-              args.unshift(this);
-              return callback.apply(scope, args);
-            });
-          };
-          for (_j = 0, _len2 = callbacks.length; _j < _len2; _j++) {
-            callback = callbacks[_j];
-            _fn2(eventType, callback);
-          }
-        }
+      for (eventType in events) {
+        callbacks = events[eventType];
+        delegateEvent(this.el, eventType, selector, callbacks);
       }
     }
     hasDelegated = true;
