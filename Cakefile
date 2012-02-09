@@ -34,13 +34,21 @@ task 'build', 'Build Uniform', ->
     
     code = """
       !function (definition) {
+        var context = this,
+          old = context.Uniform;
+
         if (typeof define == 'function' && typeof define.amd == 'object') {
           define(['require'], definition);
         } else {
-          this.Uniform = definition(function (path) {
+          context.Uniform = definition(function (path) {
             // This is a fake require for jQuery
-            return this['jQuery'];
+            return context['jQuery'];
           });
+
+          context.Uniform.noConflict = function () {
+            context.Uniform = old;
+            return this;
+          };
         }
       }(function(require) {
         #{code}
