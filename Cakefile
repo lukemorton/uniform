@@ -6,7 +6,7 @@ src = './src'
 tmp = './tmp'
 dist = './dist'
 eg = './examples'
-todo = "#{eg}/todo"
+test = './test'
 
 version = JSON.parse(fs.readFileSync('./package.json')).version
 
@@ -64,6 +64,7 @@ task 'build', 'Build Uniform', ->
       ]
 
       invoke 'build:example'
+      invoke 'build:mocks'
 
 task 'watch', 'Build on modification', ->
   waiting = false
@@ -82,3 +83,7 @@ task 'clean', 'Delete distribution folder', ->
 task 'build:example', 'Build example', ->
   console.log 'Building examples'
   exec "coffee -c #{eg}/*/*.coffee"
+
+task 'build:mocks', 'Build mock', ->
+  console.log 'Building mocks'
+  exec "coffee -c #{test}/mocks/*.coffee"

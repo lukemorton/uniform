@@ -1,0 +1,122 @@
+ <!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="lib/qunit/qunit.css" />
+	</head>
+	<body>
+		<h1 id="qunit-header">QUnit example</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+
+		<script src="lib/qunit/qunit.js"></script>
+		<script src="../examples/lib/jquery.min.js"></script>
+		<script src="../examples/lib/uniform.js"></script>
+		<script src="mocks/empty_mock.js"></script>
+		<script>
+			test("Uniform exists", function () {
+				ok(typeof(Uniform) === 'function',
+					'Uniform is defined globally');
+			});
+			
+			test('.noConflict() unsets Uniform from window', function() {
+				var original = Uniform,
+					U = Uniform.noConflict();
+
+				equals(typeof(Uniform), 'undefined',
+					'.noConflict() unsets Uniform from window');
+
+				same(U, original,
+					'the returned Uniform is the same as the original');
+
+				// cleanup
+				window.Uniform = original;
+			});
+
+			test('Denormalised event object normalised', function () {
+				var noop = function () {},
+					oldProto = EmptyMock.prototype.events,
+					mockProtoEvents = {
+						'': {
+							'hover': 'named'
+						},
+						'a': {
+							'click': noop
+						}
+					},
+					expectedEvents = {
+						'': {
+							'hover': ['named']
+						},
+						'a': {
+							'click': [noop]
+						}
+					};
+
+				EmptyMock.prototype.events = mockProtoEvents;
+				deepEqual((new EmptyMock).events, expectedEvents);
+				EmptyMock.prototype.events = oldProto;
+			});
+
+			test('Normalised event object left alone', function () {
+				var noop = function () {},
+					oldProto = EmptyMock.prototype.events,
+					expectedEvents = {
+						'': {
+							'hover': ['named', noop],
+						},
+						'a': {
+							'click': [noop]
+						}
+					};
+
+				EmptyMock.prototype.events = expectedEvents;
+				deepEqual((new EmptyMock).events, expectedEvents);
+				EmptyMock.prototype.events = oldProto;
+			});
+
+			test('Denormalised runtime events normalised', function () {
+				var noop = function () {},
+					runtimeEvents = {
+						'': {
+							'hover': 'named'
+						},
+						'a': {
+							'click': noop
+						}
+					},
+					expectedEvents = {
+						'': {
+							'hover': ['named']
+						},
+						'a': {
+							'click': [noop]
+						}
+					};
+
+				deepEqual(
+					(new EmptyMock({events: runtimeEvents})).events,
+					expectedEvents);
+			});
+
+			test('Normalised runtime events left alone', function () {
+				var noop = function () {},
+					runtimeEvents = {
+						'': {
+							'hover': ['named']
+						},
+						'a': {
+							'click': [noop]
+						}
+					};
+
+				deepEqual(
+					(new EmptyMock({events: runtimeEvents})).events,
+					runtimeEvents);
+			});
+
+		</script>
+	</body>
+</html>

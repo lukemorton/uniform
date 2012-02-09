@@ -1,0 +1,1 @@
+@EmptyMock = class extends Uniform
