@@ -96,7 +96,8 @@ class Uniform
         nEvents[selector][eventType] or= []
 
         if isArray(callback)
-          nEvents[selector][eventType].concat(callback)
+          nEvents[selector][eventType] =
+            nEvents[selector][eventType].concat(callback)
         else
           nEvents[selector][eventType].push(callback)
     return nEvents
