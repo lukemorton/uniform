@@ -102,6 +102,29 @@ class Uniform
           nEvents[selector][eventType].push(callback)
     return nEvents
 
+  # Delegate an event with an array of callbacks
+  delegateEvent = (el, eventType, selector, callbacks) ->
+    # Build the el, eventType and selector into this delegator
+    delegate = do (el, eventType, selector) ->
+      if selector is ''
+        return (callback) -> el.on(eventType, callback)
+      else
+        return (callback) -> el.on(eventType, selector, callback)
+
+    # Now delegate every callback individually
+    for callback in callbacks
+      callback = @[callback] if typeof callback is 'string'
+      do (callback) ->
+        delegate ->
+          # We convert args to a real array
+          args = Array.prototype.slice.call(arguments)
+
+          # Unshift el to the beginning of args
+          args.unshift(@)
+
+          # Call the callback
+          callback.apply(scope, args)     
+
   # Delegate events. Optionally takes a map of new events to
   # add to the object's previously defined events.
   delegateEvents: (eventsToDelegate = @events) ->
@@ -113,24 +136,8 @@ class Uniform
     @undelegateEvents()
 
     for selector, events of @events
-      if selector is ''
-        for eventType, callbacks of events
-          for callback in callbacks
-            do (eventType, callback) =>
-              callback = @[callback] if typeof callback is 'string'
-              @el.on nsEvent.call(@, eventType), ->
-                args = Array.prototype.slice.call(arguments)
-                args.unshift(@)
-                callback.apply(scope, args)
-      else
-        for eventType, callbacks of events
-          for callback in callbacks
-            do (eventType, callback) =>
-              callback = @[callback] if typeof callback is 'string'
-              @el.on nsEvent.call(@, eventType), selector, ->
-                args = Array.prototype.slice.call(arguments)
-                args.unshift(@)
-                callback.apply(scope, args)
+      for eventType, callbacks of events
+        delegateEvent(@el, eventType, selector, callbacks)
 
     hasDelegated = true
     return @
