@@ -103,7 +103,10 @@ class Uniform
     return nEvents
 
   # Delegate an event with an array of callbacks
-  delegateEvent = (el, eventType, selector, callbacks) ->
+  delegateEvent = (eventType, selector, callbacks) ->
+    el = @el
+    scope = @
+
     # Build the el, eventType and selector into this delegator
     delegate = do (el, eventType, selector) ->
       if selector is ''
@@ -137,7 +140,7 @@ class Uniform
 
     for selector, events of @events
       for eventType, callbacks of events
-        delegateEvent(@el, eventType, selector, callbacks)
+        delegateEvent.call(@, eventType, selector, callbacks)
 
     hasDelegated = true
     return @
