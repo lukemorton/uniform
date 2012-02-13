@@ -106,6 +106,7 @@ class Uniform
   delegateEvent = (eventType, selector, callbacks) ->
     el = @el
     scope = @
+    eventType = nsEvent.call(@, eventType)
 
     # Build the el, eventType and selector into this delegator
     delegate = do (el, eventType, selector) ->
