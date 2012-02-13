@@ -117,6 +117,62 @@
 					runtimeEvents);
 			});
 
+			test('Denormalised event object merged into normalised', function () {
+				var noop = function () {},
+					oldProto = EmptyMock.prototype.events,
+					mockProtoEvents = {
+						'': {
+							'hover': 'named'
+						},
+						'a': {
+							'click': noop
+						}
+					},
+					mockEvents = {
+						'': {
+							'hover': [noop],
+							'abort': 'abortOperation'
+						},
+						'a': {
+							'click': [noop, noop],
+							'hover': noop
+						}
+					},
+					expectedEvents = {
+						'': {
+							'hover': ['named', noop],
+							'abort': ['abortOperation']
+						},
+						'a': {
+							'click': [noop, noop, noop],
+							'hover': [noop]
+						}
+					};
+
+				EmptyMock.prototype.events = mockProtoEvents;
+				deepEqual((new EmptyMock({events: mockEvents})).events, expectedEvents);
+				EmptyMock.prototype.events = oldProto;
+			});
+
+			test('.undelegateEvents()', function () {
+				var ran = false,
+					mock = new EmptyMock({
+						el: $('<div />'),
+						events: {
+							'': {
+								'customEvent': function () {
+									ran = true;
+								}
+							}
+						}
+					});
+
+				mock.undelegateEvents();
+				mock.el.trigger('customEvent');
+				ok(ran === false,
+					'Callback was not run');
+			});
+
 		</script>
 	</body>
 </html>
