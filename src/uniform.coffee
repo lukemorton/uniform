@@ -143,13 +143,13 @@ class Uniform
       for eventType, callbacks of events
         delegateEvent.call(@, eventType, selector, callbacks)
 
-    hasDelegated = true
+    @hasDelegated = true
     return @
 
   # Undelegate all events
   undelegateEvents: ->
-    @el.off(nsEvent.call(@)) if hasDelegated
-    hasDelegated = false
+    @el.off(nsEvent.call(@)) if @hasDelegated
+    @hasDelegated = false
     return @
   
   # Cache elements relative to @elements
