@@ -1,4 +1,4 @@
-// Uniform v0.2.4
+// Uniform v0.2.5
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -107,6 +107,7 @@ Uniform = (function() {
     var callback, delegate, el, scope, _i, _len, _results;
     el = this.el;
     scope = this;
+    eventType = nsEvent.call(this, eventType);
     delegate = (function(el, eventType, selector) {
       if (selector === '') {
         return function(callback) {
@@ -135,9 +136,8 @@ Uniform = (function() {
   };
 
   Uniform.prototype.delegateEvents = function(eventsToDelegate) {
-    var callbacks, eventType, events, hasDelegated, scope, selector, _ref;
+    var callbacks, eventType, events, selector, _ref;
     if (eventsToDelegate == null) eventsToDelegate = this.events;
-    scope = this;
     if (eventsToDelegate !== this.events) {
       normaliseEventObject(eventsToDelegate, this.events);
     }
@@ -150,14 +150,13 @@ Uniform = (function() {
         delegateEvent.call(this, eventType, selector, callbacks);
       }
     }
-    hasDelegated = true;
+    this.hasDelegated = true;
     return this;
   };
 
   Uniform.prototype.undelegateEvents = function() {
-    var hasDelegated;
-    if (hasDelegated) this.el.off(nsEvent.call(this));
-    hasDelegated = false;
+    if (this.hasDelegated) this.el.off(nsEvent.call(this));
+    this.hasDelegated = false;
     return this;
   };
 
