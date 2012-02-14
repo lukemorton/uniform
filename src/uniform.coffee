@@ -49,7 +49,7 @@ class Uniform
       @[key] = val unless key is 'events'
 
     @uid or= ++Uniform.uniqueCounter
-    @$ or= require 'jquery'
+    @$ or= require('jquery')
     @el = @buildTemplate() unless @el and @el.length?
     @cacheElements()
 
