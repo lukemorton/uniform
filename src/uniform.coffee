@@ -101,6 +101,10 @@ class Uniform
           nEvents[selector][eventType].push(callback)
     return nEvents
 
+  @extendEvents = (events) ->
+    n = normaliseEventObject
+    @::events = n(n({}, @::events), events, )
+
   # Delegate an event with an array of callbacks
   delegateEvent = (eventType, selector, callbacks) ->
     el = @el

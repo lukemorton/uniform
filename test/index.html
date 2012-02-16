@@ -15,6 +15,8 @@
 		<script src="../examples/lib/jquery.min.js"></script>
 		<script src="../examples/lib/uniform.js"></script>
 		<script src="mocks/empty_mock.js"></script>
+		<script src="mocks/event_mock.js"></script>
+		<script src="mocks/extended_event_mock.js"></script>
 		<script>
 			test("Uniform exists", function () {
 				ok(typeof(Uniform) === 'function',
@@ -171,6 +173,21 @@
 				mock.el.trigger('customEvent');
 				ok(ran === false,
 					'Callback was not run');
+			});
+
+			test('.extendEvents()', function () {
+				var mock = new EventMock({el: $('<div />')}),
+					extendedMock = new ExtendedEventMock({el: $('<div />')});
+
+				mock.el.trigger('anEvent')
+				mock.el.trigger('anotherEvent')
+				deepEqual(mock.eventsTriggered, ['anEvent'],
+					'Expected events were run');
+
+				extendedMock.el.trigger('anEvent')
+				extendedMock.el.trigger('anotherEvent')
+				deepEqual(extendedMock.eventsTriggered, ['anEvent', 'anotherEvent'],
+					'Expected events were run');
 			});
 
 		</script>
