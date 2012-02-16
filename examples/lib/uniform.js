@@ -1,4 +1,4 @@
-// Uniform v0.2.5
+// Uniform v0.2.6
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -52,7 +52,7 @@ Uniform = (function() {
     this.$ || (this.$ = require('jquery'));
     if (!(this.el && (this.el.length != null))) this.el = this.buildTemplate();
     this.cacheElements();
-    this.events = normaliseEventObject(this.events);
+    this.events = normaliseEventObject({}, this.events);
     if ((settings != null ? settings.events : void 0) != null) {
       this.delegateEvents(settings.events);
     } else {
@@ -84,9 +84,8 @@ Uniform = (function() {
     return Object.prototype.toString.call(arg) === '[object Array]';
   };
 
-  normaliseEventObject = function(unEvents, nEvents) {
+  normaliseEventObject = function(nEvents, unEvents) {
     var callback, eventType, events, selector, _base;
-    if (nEvents == null) nEvents = {};
     for (selector in unEvents) {
       events = unEvents[selector];
       for (eventType in events) {
@@ -101,6 +100,12 @@ Uniform = (function() {
       }
     }
     return nEvents;
+  };
+
+  Uniform.extendEvents = function(events) {
+    var n;
+    n = normaliseEventObject;
+    return this.prototype.events = n(n({}, this.prototype.events), events);
   };
 
   delegateEvent = function(eventType, selector, callbacks) {
@@ -139,7 +144,7 @@ Uniform = (function() {
     var callbacks, eventType, events, selector, _ref;
     if (eventsToDelegate == null) eventsToDelegate = this.events;
     if (eventsToDelegate !== this.events) {
-      normaliseEventObject(eventsToDelegate, this.events);
+      normaliseEventObject(this.events, eventsToDelegate);
     }
     this.undelegateEvents();
     _ref = this.events;
