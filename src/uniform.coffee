@@ -53,7 +53,7 @@ class Uniform
     @cacheElements()
 
     # Normalise events object first
-    @events = normaliseEventObject(@events)
+    @events = normaliseEventObject({}, @events)
 
     # We want to append events defined here to previously
     # defined ones, we don't want the foreach to overwrite
@@ -88,7 +88,7 @@ class Uniform
 
   # Normalise an event object, optionally merging it with an
   # already normalised object
-  normaliseEventObject = (unEvents, nEvents = {}) ->
+  normaliseEventObject = (nEvents, unEvents) ->
     for selector, events of unEvents
       for eventType, callback of events
         nEvents[selector] or= {}
@@ -133,7 +133,7 @@ class Uniform
   delegateEvents: (eventsToDelegate = @events) ->
 
     unless eventsToDelegate is @events
-      normaliseEventObject(eventsToDelegate, @events)
+      normaliseEventObject(@events, eventsToDelegate)
         
     @undelegateEvents()
 
