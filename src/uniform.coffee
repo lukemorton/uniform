@@ -135,7 +135,6 @@ class Uniform
   # Delegate events. Optionally takes a map of new events to
   # add to the object's previously defined events.
   delegateEvents: (eventsToDelegate = @events) ->
-
     unless eventsToDelegate is @events
       normaliseEventObject(@events, eventsToDelegate)
         
