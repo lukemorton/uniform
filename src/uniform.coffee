@@ -44,9 +44,8 @@ class Uniform
   #  - @events are delegated
   #  - @init() is called
   constructor: (settings) ->
-    for key, val of settings
-      # Merge all but events
-      @[key] = val unless key is 'events'
+    # Merge all but events
+    @[key] = val for key, val of settings when key isnt 'events'
 
     @uid or= ++Uniform.uniqueCounter
     @$ or= require('jquery')
