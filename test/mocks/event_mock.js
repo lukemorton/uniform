@@ -9,8 +9,7 @@
     _Class.prototype.events = {
       '': {
         anEvent: function(el, e) {
-          this.eventsTriggered.push('anEvent');
-          return console.log('anEvent');
+          return this.eventsTriggered.push('anEvent');
         }
       }
     };

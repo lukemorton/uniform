@@ -13,8 +13,7 @@
     _Class.extendEvents({
       '': {
         anotherEvent: function(el, e) {
-          this.eventsTriggered.push('anotherEvent');
-          return console.log('anotherEvent');
+          return this.eventsTriggered.push('anotherEvent');
         }
       }
     });
