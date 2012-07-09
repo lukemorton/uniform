@@ -59,7 +59,6 @@ class Uniform
   #  - @events are delegated
   #  - @init() is called
   init: ->
-    console.log '.init()'
     @cache_elements()
 
     # We want to append events defined here to previously
