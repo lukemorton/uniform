@@ -10,7 +10,7 @@
       _Class.__super__.constructor.apply(this, arguments);
     }
 
-    _Class.extendEvents({
+    _Class.extend_events({
       '': {
         anotherEvent: function(el, e) {
           return this.eventsTriggered.push('anotherEvent');

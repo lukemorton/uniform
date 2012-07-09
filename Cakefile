@@ -18,6 +18,7 @@ header = """
 
 task 'build', 'Build Uniform', ->
   invoke 'clean'
+
   exec [
       "mkdir -p #{tmp}"
       "coffee -b -o #{tmp} #{src}/*.coffee"
@@ -45,7 +46,7 @@ task 'build', 'Build Uniform', ->
             return context['jQuery'];
           });
 
-          context.Uniform.noConflict = function () {
+          context.Uniform.no_conflict = function () {
             context.Uniform = old;
             return this;
           };

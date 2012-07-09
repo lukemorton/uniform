@@ -23,12 +23,12 @@
 					'Uniform is defined globally');
 			});
 			
-			test('.noConflict() unsets Uniform from window', function() {
+			test('.no_conflict() unsets Uniform from window', function() {
 				var original = Uniform,
-					U = Uniform.noConflict();
+					U = Uniform.no_conflict();
 
 				equals(typeof(Uniform), 'undefined',
-					'.noConflict() unsets Uniform from window');
+					'.no_conflict() unsets Uniform from window');
 
 				same(U, original,
 					'the returned Uniform is the same as the original');
@@ -156,7 +156,7 @@
 				EmptyMock.prototype.events = oldProto;
 			});
 
-			test('.undelegateEvents()', function () {
+			test('.undelegate_events()', function () {
 				var ran = false,
 					mock = new EmptyMock({
 						el: $('<div />'),
@@ -169,13 +169,13 @@
 						}
 					});
 
-				mock.undelegateEvents();
+				mock.undelegate_events();
 				mock.el.trigger('customEvent');
 				ok(ran === false,
 					'Callback was not run');
 			});
 
-			test('.extendEvents()', function () {
+			test('.extend_events()', function () {
 				var mock = new EventMock({el: $('<div />')}),
 					extendedMock = new ExtendedEventMock({el: $('<div />')});
 

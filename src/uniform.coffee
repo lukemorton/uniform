@@ -8,7 +8,7 @@
 class Uniform
   
   # Unique counter
-  @uniqueCounter = 0
+  @unique_counter = 0
 
   # Unique ID for this Uniform
   uid: null
@@ -32,7 +32,7 @@ class Uniform
   elements: {}
 
   # Have we previously delegated events?
-  hasDelegated: false
+  has_delegated: false
 
   # The constructor takes one argument, an object, which can
   # override and append properties before initialising.
@@ -47,13 +47,13 @@ class Uniform
     # Merge all but events
     @[key] = val for key, val of settings when key isnt 'events'
 
-    @uid or= ++Uniform.uniqueCounter
+    @uid or= ++Uniform.unique_counter
     @$ or= require('jquery')
     @el = @buildTemplate() unless @el and @el.length?
     @cacheElements()
 
     # Normalise events object first
-    @events = normaliseEventObject({}, @events)
+    @events = normalise_event_object({}, @events)
 
     # We want to append events defined here to previously
     # defined ones, we don't want the foreach to overwrite
@@ -71,52 +71,52 @@ class Uniform
   # Private method for building the template. If the template
   # is a function it will be executed and its return value
   # will be used.
-  buildTemplate: ->
     @template = @template() if typeof @template is 'function'
     @$(@template)
+  build_template: (callback) ->
 
   # Find elements relative to @el
   find: (sel) -> @el.find(sel)
 
-  # Build a namespace eventType
-  nsEvent = (eventType = '') -> "#{eventType}.#{@ns}#{@uid}"
+  # Build a namespace event_type
+  ns_event = (event_type = '') -> "#{event_type}.#{@ns}#{@uid}"
 
   # Is array
-  isArray = (arg) ->
+  is_array = (arg) ->
     return Array.isArray(arg) if Array.isArray?
     return Object.prototype.toString.call(arg) == '[object Array]'
 
   # Normalise an event object, optionally merging it with an
   # already normalised object
-  normaliseEventObject = (nEvents, unEvents) ->
-    for selector, events of unEvents
-      for eventType, callback of events
-        nEvents[selector] or= {}
-        nEvents[selector][eventType] or= []
+  normalise_event_object = (norm_events, unnorm_events) ->
+    for selector, events of unnorm_events
+      for event_type, callback of events
+        norm_events[selector] or= {}
+        norm_events[selector][event_type] or= []
 
-        if isArray(callback)
-          nEvents[selector][eventType] =
-            nEvents[selector][eventType].concat(callback)
+        if is_array(callback)
+          norm_events[selector][event_type] =
+            norm_events[selector][event_type].concat(callback)
         else
-          nEvents[selector][eventType].push(callback)
-    return nEvents
+          norm_events[selector][event_type].push(callback)
+    return norm_events
 
-  @extendEvents = (events) ->
-    n = normaliseEventObject
-    @::events = n(n({}, @::events), events, )
+  @extend_events = (events) ->
+    n = normalise_event_object
+    @::events = n(n({}, @::events), events)
 
   # Delegate an event with an array of callbacks
-  delegateEvent = (eventType, selector, callbacks) ->
+  delegate_event = (event_type, selector, callbacks) ->
     el = @el
     scope = @
-    eventType = nsEvent.call(@, eventType)
+    event_type = ns_event.call(@, event_type)
 
-    # Build the el, eventType and selector into this delegator
-    delegate = do (el, eventType, selector) ->
+    # Build the el, event_type and selector into this delegator
+    delegate = do (el, event_type, selector) ->
       if selector is ''
-        return (callback) -> el.on(eventType, callback)
+        return (callback) -> el.on(event_type, callback)
       else
-        return (callback) -> el.on(eventType, selector, callback)
+        return (callback) -> el.on(event_type, selector, callback)
 
     # Now delegate every callback individually
     for callback in callbacks
@@ -132,35 +132,31 @@ class Uniform
           # Call the callback
           callback.apply(scope, args)     
 
-  # Delegate events. Optionally takes a map of new events to
-  # add to the object's previously defined events.
-  delegateEvents: (eventsToDelegate = @events) ->
-    unless eventsToDelegate is @events
-      normaliseEventObject(@events, eventsToDelegate)
-        
-    @undelegateEvents()
+  # Delegate events.
+  delegate_events: ->
+    @undelegate_events()
 
     for selector, events of @events
-      for eventType, callbacks of events
-        delegateEvent.call(@, eventType, selector, callbacks)
+      for event_type, callbacks of events
+        delegate_event.call(@, event_type, selector, callbacks)
 
-    @hasDelegated = true
+    @has_delegated = true
     return @
 
   # Undelegate all events
-  undelegateEvents: ->
-    @el.off(nsEvent.call(@)) if @hasDelegated
-    @hasDelegated = false
+  undelegate_events: ->
+    @el.off(ns_event.call(@)) if @has_delegated
+    @has_delegated = false
     return @
   
   # Cache elements relative to @elements
-  cacheElements: ->
+  cache_elements: ->
     @[name] = @find(sel) for name, sel of @elements
     return @
 
   # Undelegate and remove @el from the DOM!
   destroy: ->
-    @undelegateEvents()
+    @undelegate_events()
     @el.remove()
     @el = null
     return @
