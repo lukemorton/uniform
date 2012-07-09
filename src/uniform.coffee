@@ -40,40 +40,48 @@ class Uniform
   # We then set up a number of properties:
   #  - @$ is set to jQuery unless an alternative is specified
   #  - @el is built unless already supplied
-  #  - @elements are cached
-  #  - @events are delegated
-  #  - @init() is called
   constructor: (settings) ->
     # Merge all but events
     @[key] = val for key, val of settings when key isnt 'events'
 
     @uid or= ++Uniform.unique_counter
     @$ or= require('jquery')
-    @el = @buildTemplate() unless @el and @el.length?
-    @cacheElements()
 
     # Normalise events object first
     @events = normalise_event_object({}, @events)
+
+    if settings?.events
+      normalise_event_object(@events, settings.events)
+
+    @build_template(-> @init())
+
+  #  - @elements are cached
+  #  - @events are delegated
+  #  - @init() is called
+  init: ->
+    console.log '.init()'
+    @cache_elements()
 
     # We want to append events defined here to previously
     # defined ones, we don't want the foreach to overwrite
     # the originals
     if settings?.events?
-      @delegateEvents(settings.events)
+      @delegate_events(settings.events)
     else
-      @delegateEvents()
-
-    @init()
-
-  # By default @init() does nothing
-  init: -> null
+      @delegate_events()
 
   # Private method for building the template. If the template
   # is a function it will be executed and its return value
   # will be used.
-    @template = @template() if typeof @template is 'function'
-    @$(@template)
   build_template: (callback) ->
+    if typeof @template is 'function'
+      @template (view) =>
+        @el = @$(view)
+        callback.call(@)
+      return
+    
+    @el = @$(@template) unless @el and @el.length?
+    callback.call(@)
 
   # Find elements relative to @el
   find: (sel) -> @el.find(sel)
