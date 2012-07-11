@@ -66,14 +66,19 @@ class Uniform
   # is a function it will be executed and its return value
   # will be used.
   build_template: (callback) ->
-    if typeof @template is 'function'
+    if @el and @el.length?
+      callback.call(@)
+
+    else if typeof @template is 'function'
       @template (view) =>
         @el = @$(view)
         callback.call(@)
-      return
-    
-    @el = @$(@template) unless @el and @el.length?
-    callback.call(@)
+
+    else
+      @el = @$(@template)
+      callback.call(@)
+
+    return @
 
   # Find elements relative to @el
   find: (sel) -> @el.find(sel)
