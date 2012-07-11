@@ -60,14 +60,7 @@ class Uniform
   #  - @init() is called
   init: ->
     @cache_elements()
-
-    # We want to append events defined here to previously
-    # defined ones, we don't want the foreach to overwrite
-    # the originals
-    if settings?.events?
-      @delegate_events(settings.events)
-    else
-      @delegate_events()
+    @delegate_events()
 
   # Private method for building the template. If the template
   # is a function it will be executed and its return value
