@@ -1,4 +1,4 @@
-// Uniform v0.3.0
+// Uniform v0.3.1
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -60,26 +60,24 @@ Uniform = (function() {
   }
 
   Uniform.prototype.init = function() {
-    console.log('.init()');
     this.cache_elements();
-    if ((typeof settings !== "undefined" && settings !== null ? settings.events : void 0) != null) {
-      return this.delegate_events(settings.events);
-    } else {
-      return this.delegate_events();
-    }
+    return this.delegate_events();
   };
 
   Uniform.prototype.build_template = function(callback) {
     var _this = this;
-    if (typeof this.template === 'function') {
+    if (this.el && (this.el.length != null)) {
+      callback.call(this);
+    } else if (typeof this.template === 'function') {
       this.template(function(view) {
         _this.el = _this.$(view);
         return callback.call(_this);
       });
-      return;
+    } else {
+      this.el = this.$(this.template);
+      callback.call(this);
     }
-    if (!(this.el && (this.el.length != null))) this.el = this.$(this.template);
-    return callback.call(this);
+    return this;
   };
 
   Uniform.prototype.find = function(sel) {

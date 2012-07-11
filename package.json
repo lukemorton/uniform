@@ -2,7 +2,7 @@
   "author": "Luke Morton <lukemorton.designs@gmail.com> (http://lukemorton.co.uk)",
   "name": "Uniform",
   "description": "Uniform is a ViewModel for CoffeeScript",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "homepage": "http://github.com/DrPheltRight/uniform",
   "repository": {
     "type": "git",
