@@ -69,7 +69,9 @@ class TodoItem extends Uniform
 
   # This method is run on construction, it prepends the name
   # to the <li> element in the template
-  init: -> @el.prepend(@item)
+  init: ->
+    super
+    @el.prepend(@item)
 
   # Some more event delegation
   events:

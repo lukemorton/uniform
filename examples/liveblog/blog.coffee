@@ -10,12 +10,12 @@ class Blog extends Uniform
     header: 'h1'
 
   # Render main template also with post partial
-  template: ->
-    Hogan.TemplateCache.blog.render @,
-      post: Hogan.TemplateCache.post
+  template: (built) ->
+    built(Hogan.TemplateCache.blog.render(@, post: Hogan.TemplateCache.post))
 
   # On init add BlogForm to @el then add @el to body
   init: ->
+    super
     form = new BlogForm(blog: @)
     @el.prepend(form.el).appendTo('body')
 
@@ -46,7 +46,8 @@ class BlogForm extends Uniform
         @title.focus()
 
   # Use another hogan template for form
-  template: -> Hogan.TemplateCache.form.render @
+  template: (built) ->
+    built(Hogan.TemplateCache.form.render(@))
 
 # On load init
 jQuery -> new Blog

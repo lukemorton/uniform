@@ -58,6 +58,7 @@
     TodoItem.prototype.template = "<li>\n  <button class=\"remove\">Remove</button>\n</li>";
 
     TodoItem.prototype.init = function() {
+      TodoItem.__super__.init.apply(this, arguments);
       return this.el.prepend(this.item);
     };
 

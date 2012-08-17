@@ -9,22 +9,29 @@ class App extends Uniform
     form:
       submit: (el, e) ->
         e.preventDefault()
-        @nickUrl(@url.val()).el.appendTo(@gallery)
+        $gallery = @gallery
+        @nickUrl @url.val(), ->
+          @el.appendTo($gallery)
 
-  nickUrl: (url) ->
+  nickUrl: (url, callback) ->
     unless @hasNicked?
       @gallery.html('')
       @hasNicked = true
-    new Asset(url: url)
+    
+    return new Asset
+      url: url
+      template_built: callback
 
 class Asset extends Uniform
-  template: ->
-    """
+  template: (built) ->
+    built """
       <div class="asset">
         <img src="#{@url}" />
       </div>
     """
 
-jQuery -> new App
+  init: ->
+    super
+    @template_built() if @template_built?
 
-        
+jQuery -> new App

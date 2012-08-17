@@ -21,19 +21,24 @@
     App.prototype.events = {
       form: {
         submit: function(el, e) {
+          var $gallery;
           e.preventDefault();
-          return this.nickUrl(this.url.val()).el.appendTo(this.gallery);
+          $gallery = this.gallery;
+          return this.nickUrl(this.url.val(), function() {
+            return this.el.appendTo($gallery);
+          });
         }
       }
     };
 
-    App.prototype.nickUrl = function(url) {
+    App.prototype.nickUrl = function(url, callback) {
       if (this.hasNicked == null) {
         this.gallery.html('');
         this.hasNicked = true;
       }
       return new Asset({
-        url: url
+        url: url,
+        template_built: callback
       });
     };
 
@@ -49,8 +54,13 @@
       Asset.__super__.constructor.apply(this, arguments);
     }
 
-    Asset.prototype.template = function() {
-      return "<div class=\"asset\">\n  <img src=\"" + this.url + "\" />\n</div>";
+    Asset.prototype.template = function(built) {
+      return built("<div class=\"asset\">\n  <img src=\"" + this.url + "\" />\n</div>");
+    };
+
+    Asset.prototype.init = function() {
+      Asset.__super__.init.apply(this, arguments);
+      if (this.template_built != null) return this.template_built();
     };
 
     return Asset;

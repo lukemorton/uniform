@@ -14,6 +14,7 @@
     ContactForm.prototype.template = "<form>\n  <textarea></textarea>\n  <button>Send</button>\n</form>";
 
     ContactForm.prototype.init = function() {
+      ContactForm.__super__.init.apply(this, arguments);
       return $('body').append(this.el);
     };
 
@@ -24,13 +25,15 @@
 
     ContactForm.prototype.events = {
       '': {
-        'submit': 'sendResponse'
+        'submit': function(el, e) {
+          e.preventDefault();
+          return this.sendResponse();
+        }
       }
     };
 
-    ContactForm.prototype.sendResponse = function(el, e) {
+    ContactForm.prototype.sendResponse = function() {
       var _this = this;
-      e.preventDefault();
       this.btn.text('Sending...');
       return $.post('index.html', {
         msg: this.msg

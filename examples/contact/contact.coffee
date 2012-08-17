@@ -9,7 +9,9 @@ class ContactForm extends Uniform
   """
 
   # On initialise we want to add the form to the body
-  init: -> $('body').append(@el)
+  init: ->
+    super
+    $('body').append(@el)
 
   # We cache some children to properties on this object
   elements:
@@ -19,11 +21,12 @@ class ContactForm extends Uniform
   # We delegate the submit event to @sendResponse()
   events:
     '': # This empty string means attach to thyself
-      'submit': 'sendResponse'
+      'submit': (el, e) ->
+        e.preventDefault()
+        @sendResponse()
 
   # Do the sending :)
-  sendResponse: (el, e) ->
-    e.preventDefault()
+  sendResponse: ->
     @btn.text('Sending...')
     $.post 'index.html', msg: @msg, =>
       @msg.val('')

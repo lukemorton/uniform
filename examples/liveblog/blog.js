@@ -17,14 +17,15 @@
       header: 'h1'
     };
 
-    Blog.prototype.template = function() {
-      return Hogan.TemplateCache.blog.render(this, {
+    Blog.prototype.template = function(built) {
+      return built(Hogan.TemplateCache.blog.render(this, {
         post: Hogan.TemplateCache.post
-      });
+      }));
     };
 
     Blog.prototype.init = function() {
       var form;
+      Blog.__super__.init.apply(this, arguments);
       form = new BlogForm({
         blog: this
       });
@@ -68,8 +69,8 @@
       }
     };
 
-    BlogForm.prototype.template = function() {
-      return Hogan.TemplateCache.form.render(this);
+    BlogForm.prototype.template = function(built) {
+      return built(Hogan.TemplateCache.form.render(this));
     };
 
     return BlogForm;
