@@ -1,9 +1,9 @@
 # Uniform
 
-I present to you a ViewController for the browser. A
-ViewController (in this case) is a class that describes the
-behaviour of an element and it's children. It goes well with
-jQuery but can use whatever you like.
+I present to you a ViewModel for the browser. A ViewModel
+(in this case) is a class that describes the behaviour of an
+element and it's children. It goes well with jQuery but can
+use whatever you like (e.g. zepto).
 
 Here's an example:
 
@@ -19,7 +19,9 @@ class ContactForm extends Uniform
   """
 
   # On initialise we want to add the form to the body
-  init: -> $('body').append(@el)
+  init: ->
+    super
+    $('body').append(@el)
 
   # We cache some children to properties on this object
   elements:
@@ -29,11 +31,12 @@ class ContactForm extends Uniform
   # We delegate the submit event to @sendResponse()
   events:
     '': # This empty string means attach to thyself
-      'submit': 'sendResponse'
+      'submit': (el, e) ->
+        e.preventDefault()
+        @sendResponse()
 
   # Do the sending :)
-  sendResponse: (el, e) ->
-    e.preventDefault()
+  sendResponse: ->
     @btn.text('Sending...')
     $.post 'index.html', msg: @msg, =>
       @msg.val('')
