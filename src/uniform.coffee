@@ -45,7 +45,7 @@ class Uniform
     @[key] = val for key, val of settings when key isnt 'events'
 
     @uid or= ++Uniform.unique_counter
-    @$ or= require('jquery')
+    @$ or= Uniform.$
 
     # Normalise events object first
     @events = normalise_event_object({}, @events)
