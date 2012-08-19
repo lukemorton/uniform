@@ -43,7 +43,7 @@ task 'build', 'Build Uniform', ->
         } else {
           context.Uniform = definition(function (jQuery) {
             // This is a fake require for jQuery
-            return context['jQuery'];
+            return context['$'];
           });
 
           context.Uniform.no_conflict = function () {
