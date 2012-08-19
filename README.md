@@ -1,9 +1,9 @@
 # Uniform
 
-I present to you a ViewModel for the browser. A ViewModel
+I present to you a view model for the browser. A view model
 (in this case) is a class that describes the behaviour of an
 element and it's children. It goes well with jQuery but can
-use whatever you like (e.g. zepto).
+use whatever you like (e.g. Zepto).
 
 Here's an example:
 
@@ -46,7 +46,7 @@ class ContactForm extends Uniform
 jQuery -> new ContactForm
 ```
 
-You can also use your ViewControllers on elements already in
+You can also use your view models on elements already in
 the DOM like so:
 
 ``` coffeescript
@@ -75,8 +75,8 @@ Use it how you like though.
 
 ## Getting a copy
 
-You can simply use the JS found in the dist folder of the
-Uniform git repo [https://github.com/DrPheltRight/uniform]()
+You can simply use the JS found in the `dist` folder of the
+Uniform git repo [https://github.com/DrPheltRight/uniform]().
 
 ## Hacking
 
