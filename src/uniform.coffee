@@ -47,7 +47,6 @@ class Uniform
     @uid or= ++Uniform.unique_counter
     @$ or= Uniform.$
 
-    # If events is a function
     @events = @events() if typeof @events is 'function'
 
     # Normalise events object first
