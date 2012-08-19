@@ -41,7 +41,7 @@ task 'build', 'Build Uniform', ->
         if (typeof define == 'function' && typeof define.amd == 'object') {
           define(['require'], definition);
         } else {
-          context.Uniform = definition(function (path) {
+          context.Uniform = definition(function (jQuery) {
             // This is a fake require for jQuery
             return context['jQuery'];
           });
