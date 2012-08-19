@@ -190,6 +190,32 @@
 					'Expected events were run');
 			});
 
+			test('Event function parsed just like object', function () {
+				var noop = function () {},
+					oldProto = EmptyMock.prototype.events,
+					mockProtoEvents = function () {
+						return {
+							'': {
+								'hover': 'named'
+							},
+							'a': {
+								'click': noop
+							}
+						};
+					},
+					expectedEvents = {
+						'': {
+							'hover': ['named']
+						},
+						'a': {
+							'click': [noop]
+						}
+					};
+
+				EmptyMock.prototype.events = mockProtoEvents;
+				deepEqual((new EmptyMock).events, expectedEvents);
+				EmptyMock.prototype.events = oldProto;
+			});
 		</script>
 	</body>
 </html>
