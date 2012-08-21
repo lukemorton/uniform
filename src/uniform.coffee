@@ -35,11 +35,7 @@ class Uniform
   has_delegated: false
 
   # The constructor takes one argument, an object, which can
-  # override and append properties before initialising.
-  #
-  # We then set up a number of properties:
-  #  - @$ is set to jQuery unless an alternative is specified
-  #  - @el is built unless already supplied
+  # override and append properties before initialising
   constructor: (settings) ->
     # Merge all but events
     @[key] = val for key, val of settings when key isnt 'events'
@@ -57,18 +53,15 @@ class Uniform
 
     @build_template(-> @init())
 
-  #  - @elements are cached
-  #  - @events are delegated
-  #  - @init() is called
+  # Elements are cached and events delegated by default
   init: ->
     @cache_elements()
     @delegate_events()
 
-  # Private method for building the template. If the template
-  # is a function it will be executed and its return value
-  # will be used.
+  # Build the template. If the template is a function it will
+  # be executed and its return value will be used
   build_template: (callback) ->
-    if @el and @el.length?
+    if @el?.length?
       callback.call(@)
 
     else if typeof @template is 'function'
@@ -135,7 +128,7 @@ class Uniform
           # Call the callback
           callback.apply(scope, args)     
 
-  # Delegate events.
+  # Delegate events
   delegate_events: ->
     @undelegate_events()
 
