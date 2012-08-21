@@ -10,42 +10,16 @@ class Uniform
   # Unique counter
   @unique_counter = 0
 
-  # Unique ID for this Uniform
-  uid: null
-  
-  # DOM element, that this object represents
-  el: null
-
-  # The template, blank by default
-  template: ''
-
-  # JS library, default is jQuery as set in constructor
-  $: null
-
-  # A namespace to create events under
-  ns: 'Uniform'
-
   # The event map
   events: {}
 
-  # The elements map
-  elements: {}
-
-  # Have we previously delegated events?
-  has_delegated: false
-
   # The constructor takes one argument, an object, which can
-  # override and append properties before initialising.
-  #
-  # We then set up a number of properties:
-  #  - @$ is set to jQuery unless an alternative is specified
-  #  - @el is built unless already supplied
+  # override and append properties before initialising
   constructor: (settings) ->
+    @set_defaults()
+
     # Merge all but events
     @[key] = val for key, val of settings when key isnt 'events'
-
-    @uid or= ++Uniform.unique_counter
-    @$ or= Uniform.$
 
     @events = @events() if typeof @events is 'function'
 
@@ -59,16 +33,37 @@ class Uniform
 
   #  - @elements are cached
   #  - @events are delegated
-  #  - @init() is called
   init: ->
     @cache_elements()
     @delegate_events()
 
+  set_defaults: ->
+    # Unique ID for this Uniform
+    @uid = ++Uniform.unique_counter
+
+    # JS DOM library
+    @$ = Uniform.$
+
+    # A namespace to create events under
+    @ns = 'Uniform'
+
+    # DOM element, that this object represents
+    @el = null
+
+    # The template, blank by default
+    @template = ''
+
+    # The elements map
+    @elements = {}
+
+    # Have we previously delegated events?
+    @has_delegated = false
+
   # Private method for building the template. If the template
   # is a function it will be executed and its return value
-  # will be used.
+  # will be used
   build_template: (callback) ->
-    if @el and @el.length?
+    if @el?.length?
       callback.call(@)
 
     else if typeof @template is 'function'
@@ -135,7 +130,7 @@ class Uniform
           # Call the callback
           callback.apply(scope, args)     
 
-  # Delegate events.
+  # Delegate events
   delegate_events: ->
     @undelegate_events()
 
