@@ -1,4 +1,4 @@
-// Uniform v0.4.0
+// Uniform v0.4.1
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -27,32 +27,17 @@ Uniform = (function() {
 
   Uniform.unique_counter = 0;
 
-  Uniform.prototype.uid = null;
-
-  Uniform.prototype.el = null;
-
-  Uniform.prototype.template = '';
-
-  Uniform.prototype.$ = null;
-
-  Uniform.prototype.ns = 'Uniform';
-
   Uniform.prototype.events = {};
-
-  Uniform.prototype.elements = {};
-
-  Uniform.prototype.has_delegated = false;
 
   function Uniform(settings) {
     var key, val;
+    this.set_defaults();
     for (key in settings) {
       val = settings[key];
       if (key !== 'events') {
         this[key] = val;
       }
     }
-    this.uid || (this.uid = ++Uniform.unique_counter);
-    this.$ || (this.$ = Uniform.$);
     if (typeof this.events === 'function') {
       this.events = this.events();
     }
@@ -70,9 +55,20 @@ Uniform = (function() {
     return this.delegate_events();
   };
 
+  Uniform.prototype.set_defaults = function() {
+    this.uid = ++Uniform.unique_counter;
+    this.$ = Uniform.$;
+    this.ns = 'Uniform';
+    this.el = null;
+    this.template = '';
+    this.elements = {};
+    return this.has_delegated = false;
+  };
+
   Uniform.prototype.build_template = function(callback) {
-    var _this = this;
-    if (this.el && (this.el.length != null)) {
+    var _ref,
+      _this = this;
+    if (((_ref = this.el) != null ? _ref.length : void 0) != null) {
       callback.call(this);
     } else if (typeof this.template === 'function') {
       this.template(function(view) {
