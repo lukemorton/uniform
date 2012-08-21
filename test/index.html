@@ -152,7 +152,9 @@
 					};
 
 				EmptyMock.prototype.events = mockProtoEvents;
-				deepEqual((new EmptyMock({events: mockEvents})).events, expectedEvents);
+				deepEqual(
+					(new EmptyMock({events: mockEvents})).events,
+					expectedEvents);
 				EmptyMock.prototype.events = oldProto;
 			});
 
@@ -181,12 +183,16 @@
 
 				mock.el.trigger('anEvent')
 				mock.el.trigger('anotherEvent')
-				deepEqual(mock.eventsTriggered, ['anEvent'],
+				deepEqual(
+					mock.eventsTriggered,
+					['anEvent'],
 					'Expected events were run');
 
 				extendedMock.el.trigger('anEvent')
 				extendedMock.el.trigger('anotherEvent')
-				deepEqual(extendedMock.eventsTriggered, ['anEvent', 'anotherEvent'],
+				deepEqual(
+					extendedMock.eventsTriggered,
+					['anEvent', 'anotherEvent'],
 					'Expected events were run');
 			});
 
