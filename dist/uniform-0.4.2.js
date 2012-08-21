@@ -1,4 +1,4 @@
-// Uniform v0.4.1
+// Uniform v0.4.2
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -27,17 +27,32 @@ Uniform = (function() {
 
   Uniform.unique_counter = 0;
 
+  Uniform.prototype.uid = null;
+
+  Uniform.prototype.el = null;
+
+  Uniform.prototype.template = '';
+
+  Uniform.prototype.$ = null;
+
+  Uniform.prototype.ns = 'Uniform';
+
   Uniform.prototype.events = {};
+
+  Uniform.prototype.elements = {};
+
+  Uniform.prototype.has_delegated = false;
 
   function Uniform(settings) {
     var key, val;
-    this.set_defaults();
     for (key in settings) {
       val = settings[key];
       if (key !== 'events') {
         this[key] = val;
       }
     }
+    this.uid || (this.uid = ++Uniform.unique_counter);
+    this.$ || (this.$ = Uniform.$);
     if (typeof this.events === 'function') {
       this.events = this.events();
     }
@@ -53,16 +68,6 @@ Uniform = (function() {
   Uniform.prototype.init = function() {
     this.cache_elements();
     return this.delegate_events();
-  };
-
-  Uniform.prototype.set_defaults = function() {
-    this.uid = ++Uniform.unique_counter;
-    this.$ = Uniform.$;
-    this.ns = 'Uniform';
-    this.el = null;
-    this.template = '';
-    this.elements = {};
-    return this.has_delegated = false;
   };
 
   Uniform.prototype.build_template = function(callback) {
