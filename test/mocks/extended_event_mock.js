@@ -11,13 +11,14 @@
       return _Class.__super__.constructor.apply(this, arguments);
     }
 
-    _Class.extend_events({
-      '': {
-        anotherEvent: function(el, e) {
-          return this.eventsTriggered.push('anotherEvent');
-        }
-      }
-    });
+    _Class.prototype.events = function() {
+      var events;
+      events = _Class.__super__.events.apply(this, arguments);
+      events[''].anotherEvent = function(el, e) {
+        return this.eventsTriggered.push('anotherEvent');
+      };
+      return events;
+    };
 
     return _Class;
 

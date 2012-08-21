@@ -7,18 +7,24 @@
 
     __extends(_Class, _super);
 
-    _Class.prototype.events = {
-      '': {
-        anEvent: function(el, e) {
-          return this.eventsTriggered.push('anEvent');
+    function _Class() {
+      return _Class.__super__.constructor.apply(this, arguments);
+    }
+
+    _Class.prototype.events = function() {
+      return {
+        '': {
+          anEvent: function(el, e) {
+            return this.eventsTriggered.push('anEvent');
+          }
         }
-      }
+      };
     };
 
-    function _Class() {
-      _Class.__super__.constructor.apply(this, arguments);
-      this.eventsTriggered = [];
-    }
+    _Class.prototype.set_defaults = function() {
+      _Class.__super__.set_defaults.apply(this, arguments);
+      return this.eventsTriggered = [];
+    };
 
     return _Class;
 

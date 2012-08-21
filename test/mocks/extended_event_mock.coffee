@@ -1,6 +1,7 @@
 @ExtendedEventMock = class extends @EventMock
 
-  @extend_events
-    '':
-      anotherEvent: (el, e) ->
-        @eventsTriggered.push('anotherEvent')
+  events: ->
+    events = super
+    events[''].anotherEvent = (el, e) ->
+      @eventsTriggered.push('anotherEvent')
+    return events
