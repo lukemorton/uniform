@@ -52,9 +52,9 @@ task 'build', 'Build Uniform', ->
           };
         }
       }(function(require) {
-        #{code}
-        Uniform.$ = require('jquery');
-        return Uniform;
+      #{code}
+      Uniform.$ = require('jquery');
+      return Uniform;
       });
     """
 
