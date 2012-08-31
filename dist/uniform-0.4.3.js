@@ -1,4 +1,4 @@
-// Uniform v0.4.2
+// Uniform v0.4.3
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -53,6 +53,9 @@ Uniform = (function() {
     }
     this.uid || (this.uid = ++Uniform.unique_counter);
     this.$ || (this.$ = Uniform.$);
+    if (typeof this.elements === 'function') {
+      this.elements = this.elements();
+    }
     if (typeof this.events === 'function') {
       this.events = this.events();
     }
