@@ -21,8 +21,8 @@
       };
     };
 
-    _Class.prototype.set_defaults = function() {
-      _Class.__super__.set_defaults.apply(this, arguments);
+    _Class.prototype.init = function() {
+      _Class.__super__.init.apply(this, arguments);
       return this.eventsTriggered = [];
     };
 

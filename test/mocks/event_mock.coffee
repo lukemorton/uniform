@@ -4,6 +4,6 @@
       anEvent: (el, e) ->
         @eventsTriggered.push('anEvent')
 
-  set_defaults: ->
+  init: ->
     super
     @eventsTriggered = []
