@@ -11,7 +11,7 @@
 class TodoList extends Uniform
   # The HTML template, this could have been a jQuery obj
   # or a callback returning HTML or a jQuery obj
-  template: """
+  template: (built) -> built """
     <div id="todo">
       <form>
         <input name="item" autofocus />
@@ -23,13 +23,13 @@ class TodoList extends Uniform
   # Cache some elements, equivalent to the following:
   #   @name = @find('input[name=name]')
   #   @list = @find('ul')
-  elements:
+  elements: ->
     item: 'input[name=item]'
     list: 'ul'
 
   # Delegate some events to selectors and events found
   # within @el
-  events:
+  events: ->
     # Bind all form submits
     form:
       submit: (el, e) ->
@@ -61,7 +61,7 @@ class TodoList extends Uniform
 # Time to describe the individual todo items
 class TodoItem extends Uniform
   # Again a template
-  template: """
+  template: (built) -> built """
     <li>
       <button class="remove">Remove</button>
     </li>
@@ -74,7 +74,7 @@ class TodoItem extends Uniform
     @el.prepend(@item)
 
   # Some more event delegation
-  events:
+  events: ->
     '.remove':
       # This time we are using a string that references a
       # Uniform.destroy which is a method that undelegates

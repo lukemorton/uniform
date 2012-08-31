@@ -14,22 +14,26 @@
 
     App.prototype.el = $('#unickr');
 
-    App.prototype.elements = {
-      url: '#url',
-      gallery: '#gallery'
+    App.prototype.elements = function() {
+      return {
+        url: '#url',
+        gallery: '#gallery'
+      };
     };
 
-    App.prototype.events = {
-      form: {
-        submit: function(el, e) {
-          var $gallery;
-          e.preventDefault();
-          $gallery = this.gallery;
-          return this.nickUrl(this.url.val(), function() {
-            return this.el.appendTo($gallery);
-          });
+    App.prototype.events = function() {
+      return {
+        form: {
+          submit: function(el, e) {
+            var $gallery;
+            e.preventDefault();
+            $gallery = this.gallery;
+            return this.nickUrl(this.url.val(), function() {
+              return this.el.appendTo($gallery);
+            });
+          }
         }
-      }
+      };
     };
 
     App.prototype.nickUrl = function(url, callback) {

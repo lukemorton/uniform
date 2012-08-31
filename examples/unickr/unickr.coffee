@@ -1,11 +1,11 @@
 class App extends Uniform
   el: $('#unickr')
 
-  elements:
+  elements: ->
     url    : '#url'
     gallery: '#gallery'
 
-  events:
+  events: ->
     form:
       submit: (el, e) ->
         e.preventDefault()

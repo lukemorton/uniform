@@ -12,24 +12,30 @@
       return TodoList.__super__.constructor.apply(this, arguments);
     }
 
-    TodoList.prototype.template = "<div id=\"todo\">\n  <form>\n    <input name=\"item\" autofocus />\n  </form>\n  <ul></ul>\n</div>";
-
-    TodoList.prototype.elements = {
-      item: 'input[name=item]',
-      list: 'ul'
+    TodoList.prototype.template = function(built) {
+      return built("<div id=\"todo\">\n  <form>\n    <input name=\"item\" autofocus />\n  </form>\n  <ul></ul>\n</div>");
     };
 
-    TodoList.prototype.events = {
-      form: {
-        submit: function(el, e) {
-          var val;
-          e.preventDefault();
-          if (val = this.item.val()) {
-            this.addItem(val);
+    TodoList.prototype.elements = function() {
+      return {
+        item: 'input[name=item]',
+        list: 'ul'
+      };
+    };
+
+    TodoList.prototype.events = function() {
+      return {
+        form: {
+          submit: function(el, e) {
+            var val;
+            e.preventDefault();
+            if (val = this.item.val()) {
+              this.addItem(val);
+            }
+            return this.item.val('').focus();
           }
-          return this.item.val('').focus();
         }
-      }
+      };
     };
 
     TodoList.prototype.addItem = function(item) {
@@ -58,17 +64,21 @@
       return TodoItem.__super__.constructor.apply(this, arguments);
     }
 
-    TodoItem.prototype.template = "<li>\n  <button class=\"remove\">Remove</button>\n</li>";
+    TodoItem.prototype.template = function(built) {
+      return built("<li>\n  <button class=\"remove\">Remove</button>\n</li>");
+    };
 
     TodoItem.prototype.init = function() {
       TodoItem.__super__.init.apply(this, arguments);
       return this.el.prepend(this.item);
     };
 
-    TodoItem.prototype.events = {
-      '.remove': {
-        click: 'destroy'
-      }
+    TodoItem.prototype.events = function() {
+      return {
+        '.remove': {
+          click: 'destroy'
+        }
+      };
     };
 
     TodoItem.prototype.destroy = function() {

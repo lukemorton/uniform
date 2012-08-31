@@ -12,25 +12,31 @@
       return ContactForm.__super__.constructor.apply(this, arguments);
     }
 
-    ContactForm.prototype.template = "<form>\n  <textarea></textarea>\n  <button>Send</button>\n</form>";
-
     ContactForm.prototype.init = function() {
       ContactForm.__super__.init.apply(this, arguments);
       return $('body').append(this.el);
     };
 
-    ContactForm.prototype.elements = {
-      msg: 'textarea',
-      btn: 'button'
+    ContactForm.prototype.template = function(build) {
+      return build("<form>\n  <textarea></textarea>\n  <button>Send</button>\n</form>");
     };
 
-    ContactForm.prototype.events = {
-      '': {
-        'submit': function(el, e) {
-          e.preventDefault();
-          return this.sendResponse();
+    ContactForm.prototype.elements = function() {
+      return {
+        msg: 'textarea',
+        btn: 'button'
+      };
+    };
+
+    ContactForm.prototype.events = function() {
+      return {
+        '': {
+          'submit': function(el, e) {
+            e.preventDefault();
+            return this.sendResponse();
+          }
         }
-      }
+      };
     };
 
     ContactForm.prototype.sendResponse = function() {
