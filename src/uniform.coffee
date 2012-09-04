@@ -59,14 +59,10 @@ class Uniform
     if @el?.length?
       callback.call(@)
 
-    else if typeof @template is 'function'
+    else
       @template (view) =>
         @el = @$(view)
         callback.call(@)
-
-    else
-      @el = @$(@template)
-      callback.call(@)
 
     return @
 
