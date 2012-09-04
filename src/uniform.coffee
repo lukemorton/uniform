@@ -126,7 +126,7 @@ class Uniform
   delegate_events: ->
     @undelegate_events()
 
-    for selector, events of @events
+    for selector, events of normalise_event_object({}, @events())
       for event_type, callbacks of events
         delegate_event.call(@, event_type, selector, callbacks)
 
