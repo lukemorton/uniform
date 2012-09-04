@@ -144,7 +144,7 @@ class Uniform
   
   # Cache elements relative to @elements
   cache_elements: ->
-    @[name] = @find(sel) for name, sel of @elements
+    @[name] = @find(sel) for name, sel of @elements()
     return @
 
   # Undelegate and remove @el from the DOM!
