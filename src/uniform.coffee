@@ -51,8 +51,10 @@ class Uniform
     @cache_elements()
     @delegate_events()
 
-  # Build the template. If the template is a function it will
-  # be executed and its return value will be used
+  # The template, blank by default
+  template: -> ''
+
+  # Build the template if @el isn't set or is empty
   build_template: (callback) ->
     if @el?.length?
       callback.call(@)
