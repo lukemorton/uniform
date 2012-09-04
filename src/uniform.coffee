@@ -38,7 +38,6 @@ class Uniform
     @uid or= ++Uniform.unique_counter
     @$ or= Uniform.$
 
-    @elements = @elements() if typeof @elements is 'function'
     @build_template(-> @init())
 
   # The event map
