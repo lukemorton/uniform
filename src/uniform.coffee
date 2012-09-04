@@ -26,7 +26,8 @@ class Uniform
   ns: 'Uniform'
 
   # Have we previously delegated events?
-  has_delegated: false
+  has_delegated: no
+
 
   # The constructor takes one argument, an object, which can
   # override and append properties before initialising
