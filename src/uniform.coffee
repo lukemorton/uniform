@@ -39,14 +39,6 @@ class Uniform
     @$ or= Uniform.$
 
     @elements = @elements() if typeof @elements is 'function'
-    @events = @events() if typeof @events is 'function'
-
-    # Normalise events object first
-    @events = normalise_event_object({}, @events)
-
-    if settings?.events
-      normalise_event_object(@events, settings.events)
-
     @build_template(-> @init())
 
   # The event map
