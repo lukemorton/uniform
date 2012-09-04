@@ -32,7 +32,7 @@ class Uniform
   # The constructor takes one argument, an object, which can
   # override and append properties before initialising
   constructor: (settings) ->
-    @[key] = val for key, val of settings when key isnt 'events'
+    @[key] = val for key, val of settings when key in ['el', '$', 'ns', 'uid']
 
     @uid or= ++Uniform.unique_counter
     @$ or= Uniform.$
