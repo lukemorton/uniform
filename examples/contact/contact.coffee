@@ -7,7 +7,7 @@ class ContactForm extends Uniform
     $('body').append(@el)
     
   # The HTML template
-  template: (build) -> build """
+  template: (built) -> built """
     <form>
       <textarea></textarea>
       <button>Send</button>

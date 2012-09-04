@@ -17,8 +17,8 @@
       return $('body').append(this.el);
     };
 
-    ContactForm.prototype.template = function(build) {
-      return build("<form>\n  <textarea></textarea>\n  <button>Send</button>\n</form>");
+    ContactForm.prototype.template = function(built) {
+      return built("<form>\n  <textarea></textarea>\n  <button>Send</button>\n</form>");
     };
 
     ContactForm.prototype.elements = function() {
