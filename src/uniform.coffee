@@ -138,6 +138,9 @@ class Uniform
     @el.off(ns_event.call(@)) if @has_delegated
     @has_delegated = false
     return @
+
+  # Elements
+  elements: -> {}
   
   # Cache elements relative to @elements
   cache_elements: ->
