@@ -28,9 +28,10 @@ class Uniform
   # Have we previously delegated events?
   has_delegated: no
 
+  # The constructor takes one argument – an object – which can
+  # override certain properties before initialising
+  # We also build the template if necessary and select a JS
 
-  # The constructor takes one argument, an object, which can
-  # override and append properties before initialising
   constructor: (settings) ->
     @[key] = val for key, val of settings when key in ['el', '$', 'ns', 'uid']
 
