@@ -91,6 +91,9 @@ class Uniform
         else
           norm_events[selector][event_type].push(callback)
     return norm_events
+  
+  # Events
+  events: -> {}
 
   # Delegate an event with an array of callbacks
   delegate_event = (event_type, selector, callbacks) ->
