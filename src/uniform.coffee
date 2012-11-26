@@ -129,13 +129,13 @@ class Uniform
       for event_type, callbacks of events
         delegate_event.call(@, event_type, selector, callbacks)
 
-    @has_delegated = true
+    @has_delegated = yes
     return @
 
   # Undelegate all events
   undelegate_events: ->
     @el.off(ns_event.call(@)) if @has_delegated
-    @has_delegated = false
+    @has_delegated = no
     return @
 
   # Elements
