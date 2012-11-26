@@ -1,9 +1,9 @@
 @EventMock = class extends Uniform
   events: ->
     '':
-      anEvent: (el, e) ->
-        @eventsTriggered.push('anEvent')
+      an_event: (el, e) ->
+        @events_triggered.push('an_event')
 
   init: ->
     super
-    @eventsTriggered = []
+    @events_triggered = []

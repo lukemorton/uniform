@@ -14,8 +14,8 @@
     _Class.prototype.events = function() {
       var events;
       events = _Class.__super__.events.apply(this, arguments);
-      events[''].anotherEvent = function(el, e) {
-        return this.eventsTriggered.push('anotherEvent');
+      events[''].another_event = function(el, e) {
+        return this.events_triggered.push('another_event');
       };
       return events;
     };

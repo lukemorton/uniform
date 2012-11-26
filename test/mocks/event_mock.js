@@ -14,8 +14,8 @@
     _Class.prototype.events = function() {
       return {
         '': {
-          anEvent: function(el, e) {
-            return this.eventsTriggered.push('anEvent');
+          an_event: function(el, e) {
+            return this.events_triggered.push('an_event');
           }
         }
       };
@@ -23,7 +23,7 @@
 
     _Class.prototype.init = function() {
       _Class.__super__.init.apply(this, arguments);
-      return this.eventsTriggered = [];
+      return this.events_triggered = [];
     };
 
     return _Class;

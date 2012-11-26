@@ -38,21 +38,11 @@
 			});
 
 			test('.undelegate_events()', function () {
-				var ran = false,
-					mock = new EmptyMock({
-						el: $('<div />'),
-						events: {
-							'': {
-								'customEvent': function () {
-									ran = true;
-								}
-							}
-						}
-					});
+				var mock = new EventMock({el: $('<div />')});
 
 				mock.undelegate_events();
-				mock.el.trigger('customEvent');
-				ok(ran === false,
+				mock.el.trigger('an_event');
+				ok(mock.events_triggered.length === 0,
 					'Callback was not run');
 			});
 
@@ -60,18 +50,18 @@
 				var mock = new EventMock({el: $('<div />')}),
 					extendedMock = new ExtendedEventMock({el: $('<div />')});
 
-				mock.el.trigger('anEvent')
-				mock.el.trigger('anotherEvent')
+				mock.el.trigger('an_event')
+				mock.el.trigger('another_event')
 				deepEqual(
-					mock.eventsTriggered,
-					['anEvent'],
+					mock.events_triggered,
+					['an_event'],
 					'Expected events were run');
 
-				extendedMock.el.trigger('anEvent')
-				extendedMock.el.trigger('anotherEvent')
+				extendedMock.el.trigger('an_event')
+				extendedMock.el.trigger('another_event')
 				deepEqual(
-					extendedMock.eventsTriggered,
-					['anEvent', 'anotherEvent'],
+					extendedMock.events_triggered,
+					['an_event', 'another_event'],
 					'Expected events were run');
 			});
 		</script>

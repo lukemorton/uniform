@@ -2,6 +2,6 @@
 
   events: ->
     events = super
-    events[''].anotherEvent = (el, e) ->
-      @eventsTriggered.push('anotherEvent')
+    events[''].another_event = (el, e) ->
+      @events_triggered.push('another_event')
     return events
