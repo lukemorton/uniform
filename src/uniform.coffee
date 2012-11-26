@@ -16,9 +16,6 @@ class Uniform
   # DOM element, that this object represents
   el: null
 
-  # The template, blank by default
-  template: ''
-
   # JS library, default is jQuery as set in constructor
   $: null
 
@@ -39,16 +36,16 @@ class Uniform
 
     @build_template(-> @init())
 
-  # The event map
-  events: -> {}
-
-  # The elements map
-  elements: -> {}
-
   # Elements are cached and events delegated by default
   init: ->
     @cache_elements()
     @delegate_events()
+
+  # The elements map
+  elements: -> {}
+
+  # The event map
+  events: -> {}
 
   # The template, blank by default
   template: -> ''
@@ -67,6 +64,11 @@ class Uniform
 
   # Find elements relative to @el
   find: (sel) -> @el.find(sel)
+
+  # Cache elements relative to @elements
+  cache_elements: ->
+    @[name] = @find(sel) for name, sel of @elements()
+    return @
 
   # Build a namespace event_type
   ns_event = (event_type = '') -> "#{event_type}.#{@ns}#{@uid}"
@@ -91,9 +93,6 @@ class Uniform
           norm_events[selector][event_type].push(callback)
     return norm_events
   
-  # Events
-  events: -> {}
-
   # Delegate an event with an array of callbacks
   delegate_event = (event_type, selector, callbacks) ->
     el = @el
@@ -136,14 +135,6 @@ class Uniform
   undelegate_events: ->
     @el.off(ns_event.call(@)) if @has_delegated
     @has_delegated = no
-    return @
-
-  # Elements
-  elements: -> {}
-  
-  # Cache elements relative to @elements
-  cache_elements: ->
-    @[name] = @find(sel) for name, sel of @elements()
     return @
 
   # Undelegate and remove @el from the DOM!
