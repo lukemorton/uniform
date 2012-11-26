@@ -25,14 +25,14 @@ class Uniform
   # A namespace to create events under
   ns: 'Uniform'
 
+  # Have we previously delegated events?
+  has_delegated: false
+
   # The event map
   events: {}
 
   # The elements map
   elements: {}
-
-  # Have we previously delegated events?
-  has_delegated: false
 
   # The constructor takes one argument, an object, which can
   # override and append properties before initialising
