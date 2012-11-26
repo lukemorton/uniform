@@ -88,11 +88,7 @@ and then run "cake build" to make a fresh copy of Uniform.
 
 In a future version (v0.5.x) I will:
 
- - Remove constructor overriding. Although handy to change
-   things when creating an instance, I only think a specific
-   set of elements should be changable, i.e. `el`.
- - Remove ability for events and elements to be objects, they
-   will in future have to be methods that return objects.
+ - Remove constructor definition.
 
 ## License
 
