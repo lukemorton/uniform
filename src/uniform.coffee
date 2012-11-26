@@ -36,17 +36,6 @@ class Uniform
 
     @build_template(-> @init())
 
-  # Elements are cached and events delegated by default
-  init: ->
-    @cache_elements()
-    @delegate_events()
-
-  # The elements map
-  elements: -> {}
-
-  # The event map
-  events: -> {}
-
   # The template, blank by default
   template: (built) -> built ''
 
@@ -62,6 +51,14 @@ class Uniform
 
     return @
 
+  # Elements are cached and events delegated by default
+  init: ->
+    @cache_elements()
+    @delegate_events()
+
+  # The elements map
+  elements: -> {}
+
   # Find elements relative to @el
   find: (sel) -> @el.find(sel)
 
@@ -69,6 +66,9 @@ class Uniform
   cache_elements: ->
     @[name] = @find(sel) for name, sel of @elements()
     return @
+
+  # The event map
+  events: -> {}
 
   # Build a namespace event_type
   ns_event = (event_type = '') -> "#{event_type}.#{@ns}#{@uid}"
