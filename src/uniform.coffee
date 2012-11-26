@@ -48,7 +48,7 @@ class Uniform
   events: -> {}
 
   # The template, blank by default
-  template: -> ''
+  template: (built) -> built ''
 
   # Build the template if @el isn't set or is empty
   build_template: (callback) ->
