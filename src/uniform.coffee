@@ -29,10 +29,10 @@ class Uniform
   has_delegated: false
 
   # The event map
-  events: {}
+  events: -> {}
 
   # The elements map
-  elements: {}
+  elements: -> {}
 
   # The constructor takes one argument, an object, which can
   # override and append properties before initialising
