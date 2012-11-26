@@ -29,9 +29,7 @@
     Blog.prototype.init = function() {
       var form;
       Blog.__super__.init.apply(this, arguments);
-      form = new BlogForm({
-        blog: this
-      });
+      form = new BlogForm(this);
       return this.el.prepend(form.el).appendTo('body');
     };
 
@@ -43,33 +41,38 @@
 
     __extends(BlogForm, _super);
 
-    function BlogForm() {
-      return BlogForm.__super__.constructor.apply(this, arguments);
+    function BlogForm(blog) {
+      this.blog = blog;
+      BlogForm.__super__.constructor.call(this);
     }
 
-    BlogForm.prototype.elements = {
-      title: '#title',
-      content: '#content'
+    BlogForm.prototype.elements = function() {
+      return {
+        title: '#title',
+        content: '#content'
+      };
     };
 
-    BlogForm.prototype.events = {
-      '': {
-        submit: function(el, e) {
-          var newPost;
-          e.preventDefault();
-          newPost = {
-            title: this.title.val(),
-            content: this.content.val()
-          };
-          this.blog.header.after(Hogan.TemplateCache.post.render(newPost));
-          this.blog.posts.push(newPost);
-          localStorage.posts = JSON.stringify(this.blog.posts);
-          [this.title, this.content].forEach(function(el) {
-            return el.val('');
-          });
-          return this.title.focus();
+    BlogForm.prototype.events = function() {
+      return {
+        '': {
+          submit: function(el, e) {
+            var newPost;
+            e.preventDefault();
+            newPost = {
+              title: this.title.val(),
+              content: this.content.val()
+            };
+            this.blog.header.after(Hogan.TemplateCache.post.render(newPost));
+            this.blog.posts.push(newPost);
+            localStorage.posts = JSON.stringify(this.blog.posts);
+            [this.title, this.content].forEach(function(el) {
+              return el.val('');
+            });
+            return this.title.focus();
+          }
         }
-      }
+      };
     };
 
     BlogForm.prototype.template = function(built) {

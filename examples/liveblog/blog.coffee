@@ -16,16 +16,18 @@ class Blog extends Uniform
   # On init add BlogForm to @el then add @el to body
   init: ->
     super
-    form = new BlogForm(blog: @)
+    form = new BlogForm(@)
     @el.prepend(form.el).appendTo('body')
 
 class BlogForm extends Uniform
-  elements:
+  constructor: (@blog) -> super()
+
+  elements: ->
     title: '#title'
     content: '#content'
 
   # On submit we want to add the new blog post
-  events:
+  events: ->
     '':
       submit: (el, e) ->
         e.preventDefault()
