@@ -31,7 +31,6 @@ class Uniform
   # The constructor takes one argument – an object – which can
   # override certain properties before initialising
   # We also build the template if necessary and select a JS
-
   constructor: (settings) ->
     @[key] = val for key, val of settings when key in ['el', '$', 'ns', 'uid']
 
