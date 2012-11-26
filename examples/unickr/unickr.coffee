@@ -23,12 +23,11 @@ class App extends Uniform
       template_built: callback
 
 class Asset extends Uniform
-  template: (built) ->
-    built """
-      <div class="asset">
-        <img src="#{@url}" />
-      </div>
-    """
+  template: (built) -> built """
+    <div class="asset">
+      <img src="#{@url}" />
+    </div>
+  """
 
   init: ->
     super
