@@ -28,12 +28,6 @@ class Uniform
   # Have we previously delegated events?
   has_delegated: false
 
-  # The event map
-  events: -> {}
-
-  # The elements map
-  elements: -> {}
-
   # The constructor takes one argument, an object, which can
   # override and append properties before initialising
   constructor: (settings) ->
@@ -53,6 +47,12 @@ class Uniform
       normalise_event_object(@events, settings.events)
 
     @build_template(-> @init())
+
+  # The event map
+  events: -> {}
+
+  # The elements map
+  elements: -> {}
 
   # Elements are cached and events delegated by default
   init: ->
