@@ -14,8 +14,10 @@
 
     Blog.prototype.posts = localStorage.posts ? JSON.parse(localStorage.posts) : [];
 
-    Blog.prototype.elements = {
-      header: 'h1'
+    Blog.prototype.elements = function() {
+      return {
+        header: 'h1'
+      };
     };
 
     Blog.prototype.template = function(built) {

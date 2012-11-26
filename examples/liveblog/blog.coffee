@@ -6,7 +6,7 @@ class Blog extends Uniform
   posts: if localStorage.posts then JSON.parse(localStorage.posts) else []
 
   # Cache header
-  elements:
+  elements: ->
     header: 'h1'
 
   # Render main template also with post partial
