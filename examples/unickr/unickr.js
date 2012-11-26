@@ -41,10 +41,7 @@
         this.gallery.html('');
         this.hasNicked = true;
       }
-      return new Asset({
-        url: url,
-        template_built: callback
-      });
+      return new Asset(url, callback);
     };
 
     return App;
@@ -55,8 +52,10 @@
 
     __extends(Asset, _super);
 
-    function Asset() {
-      return Asset.__super__.constructor.apply(this, arguments);
+    function Asset(url, template_built) {
+      this.url = url;
+      this.template_built = template_built;
+      Asset.__super__.constructor.call(this);
     }
 
     Asset.prototype.template = function(built) {

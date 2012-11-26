@@ -18,11 +18,11 @@ class App extends Uniform
       @gallery.html('')
       @hasNicked = true
     
-    return new Asset
-      url: url
-      template_built: callback
+    return new Asset(url, callback)
 
 class Asset extends Uniform
+  constructor: (@url, @template_built) -> super()
+
   template: (built) -> built """
     <div class="asset">
       <img src="#{@url}" />

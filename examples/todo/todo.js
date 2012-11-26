@@ -39,10 +39,7 @@
     };
 
     TodoList.prototype.addItem = function(item) {
-      item = new TodoItem({
-        list: this,
-        item: item
-      });
+      item = new TodoItem(this, item);
       return this.list.append(item.el);
     };
 
@@ -60,8 +57,10 @@
 
     __extends(TodoItem, _super);
 
-    function TodoItem() {
-      return TodoItem.__super__.constructor.apply(this, arguments);
+    function TodoItem(list, item) {
+      this.list = list;
+      this.item = item;
+      TodoItem.__super__.constructor.call(this);
     }
 
     TodoItem.prototype.template = function(built) {

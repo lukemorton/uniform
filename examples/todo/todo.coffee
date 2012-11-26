@@ -41,7 +41,7 @@ class TodoList extends Uniform
 
   # This is a custom method
   addItem: (item) ->
-    item = new TodoItem({list: @, item: item})
+    item = new TodoItem(@, item)
     @list.append(item.el)
 
   # This is also a custom method use for adding the todo
@@ -60,6 +60,8 @@ class TodoList extends Uniform
 
 # Time to describe the individual todo items
 class TodoItem extends Uniform
+  constructor: (@list, @item) -> super()
+  
   # Again a template
   template: (built) -> built """
     <li>
