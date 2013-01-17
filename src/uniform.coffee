@@ -85,7 +85,12 @@ class Uniform
   
   # Delegate an event with an array of callbacks
   delegate_event = (event_type, selector, callback) ->
-    el = @el
+    if typeof selector is 'string'
+      el = @el
+    else
+      el = @$(selector)
+      selector = ''
+
     scope = @
     event_type = ns_event.call(@, event_type)
 
