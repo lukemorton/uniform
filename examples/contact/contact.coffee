@@ -1,4 +1,5 @@
 # Let's describe a contact form
+
 class ContactForm extends Uniform
 
   # On initialise we want to add the form to the body
@@ -15,16 +16,16 @@ class ContactForm extends Uniform
   """
 
   # We cache some children to properties on this object
-  elements: ->
-    msg: 'textarea'
-    btn: 'button'
+  elements: (add) ->
+    add('msg', 'textarea')
+    add('btn', 'button')
   
   # We delegate the submit event to @sendResponse()
-  events: ->
-    '': # This empty string means attach to thyself
-      'submit': (el, e) ->
-        e.preventDefault()
-        @sendResponse()
+  events: (add) ->
+    # Attach submit event to @el
+    add 'submit', (el, e) ->
+      e.preventDefault()
+      @sendResponse()
 
   # Do the sending :)
   sendResponse: ->

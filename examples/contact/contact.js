@@ -21,22 +21,16 @@
       return built("<form>\n  <textarea></textarea>\n  <button>Send</button>\n</form>");
     };
 
-    ContactForm.prototype.elements = function() {
-      return {
-        msg: 'textarea',
-        btn: 'button'
-      };
+    ContactForm.prototype.elements = function(add) {
+      add('msg', 'textarea');
+      return add('btn', 'button');
     };
 
-    ContactForm.prototype.events = function() {
-      return {
-        '': {
-          'submit': function(el, e) {
-            e.preventDefault();
-            return this.sendResponse();
-          }
-        }
-      };
+    ContactForm.prototype.events = function(add) {
+      return add('submit', function(el, e) {
+        e.preventDefault();
+        return this.sendResponse();
+      });
     };
 
     ContactForm.prototype.sendResponse = function() {
