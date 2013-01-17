@@ -66,7 +66,6 @@ class Uniform
   cache_elements: ->
     add = (name, selector) =>
       @[name] = @find(selector)
-      console.log('el', name, selector)
       return {}
 
     add(name, sel) for name, sel of @elements(add)
