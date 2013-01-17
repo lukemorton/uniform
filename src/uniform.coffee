@@ -57,18 +57,23 @@ class Uniform
     @delegate_events()
 
   # The elements map
-  elements: -> {}
+  elements: (add) -> {}
 
   # Find elements relative to @el
   find: (sel) -> @el.find(sel)
 
   # Cache elements relative to @elements
   cache_elements: ->
-    @[name] = @find(sel) for name, sel of @elements()
+    add = (name, selector) =>
+      @[name] = @find(selector)
+      console.log('el', name, selector)
+      return {}
+
+    add(name, sel) for name, sel of @elements(add)
     return @
 
   # The event map
-  events: -> {}
+  events: (add) -> {}
 
   # Build a namespace event_type
   ns_event = (event_type = '') -> "#{event_type}.#{@ns}#{@uid}"
@@ -77,24 +82,9 @@ class Uniform
   is_array = (arg) ->
     return Array.isArray(arg) if Array.isArray?
     return Object.prototype.toString.call(arg) == '[object Array]'
-
-  # Normalise an event object, optionally merging it with an
-  # already normalised object
-  normalise_event_object = (norm_events, unnorm_events) ->
-    for selector, events of unnorm_events
-      for event_type, callback of events
-        norm_events[selector] or= {}
-        norm_events[selector][event_type] or= []
-
-        if is_array(callback)
-          norm_events[selector][event_type] =
-            norm_events[selector][event_type].concat(callback)
-        else
-          norm_events[selector][event_type].push(callback)
-    return norm_events
   
   # Delegate an event with an array of callbacks
-  delegate_event = (event_type, selector, callbacks) ->
+  delegate_event = (event_type, selector, callback) ->
     el = @el
     scope = @
     event_type = ns_event.call(@, event_type)
@@ -107,26 +97,33 @@ class Uniform
         return (callback) -> el.on(event_type, selector, callback)
 
     # Now delegate every callback individually
-    for callback in callbacks
-      callback = @[callback] if typeof callback is 'string'
-      do (callback) ->
-        delegate ->
-          # We convert args to a real array
-          args = Array.prototype.slice.call(arguments)
+    callback = @[callback] if typeof callback is 'string'
 
-          # Unshift el to the beginning of args
-          args.unshift(@)
+    do (callback) ->
+      delegate ->
+        # We convert args to a real array
+        args = Array.prototype.slice.call(arguments)
 
-          # Call the callback
-          callback.apply(scope, args)     
+        # Unshift el to the beginning of args
+        args.unshift(@)
+
+        # Call the callback
+        callback.apply(scope, args)     
 
   # Delegate events
   delegate_events: ->
     @undelegate_events()
 
-    for selector, events of normalise_event_object({}, @events())
-      for event_type, callbacks of events
-        delegate_event.call(@, event_type, selector, callbacks)
+    add = (selector, event_type, callback) =>
+      unless callback?
+        [selector, event_type, callback] = ['', selector, event_type]
+
+      delegate_event.call(@, event_type, selector, callback)
+      return {}
+
+    for selector, events of @events(add)
+      for event_type, callback of events
+        add(selector, event_type, callback)
 
     @has_delegated = yes
     return @
