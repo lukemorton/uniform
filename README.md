@@ -25,16 +25,16 @@ class ContactForm extends Uniform
   """
 
   # We cache some children to properties on this object
-  elements: ->
-    msg: 'textarea'
-    btn: 'button'
+  elements: (add) ->
+    add('msg', 'textarea')
+    add('btn', 'button')
   
   # We delegate the submit event to @sendResponse()
-  events: ->
-    '': # This empty string means attach to thyself
-      'submit': (el, e) ->
-        e.preventDefault()
-        @sendResponse()
+  events: (add) ->
+    # attach submit event to @el
+    add 'submit', (el, e) ->
+      e.preventDefault()
+      @sendResponse()
 
   # Do the sending :)
   sendResponse: ->
@@ -88,7 +88,13 @@ and then run "cake build" to make a fresh copy of Uniform.
 
 In a future version (v0.5.x) I will:
 
- - Remove constructor definition.
+ - Remove object member definitions for events and elements
+ - Continue support for methods returning objects for events
+   and elements
+ - Add new callback array based definitions for events and
+   elements
+ - Allow jquery objects and DOM elements along with selectors
+   to hook events to
 
 ## License
 
