@@ -23,21 +23,20 @@ class TodoList extends Uniform
   # Cache some elements, equivalent to the following:
   #   @name = @find('input[name=name]')
   #   @list = @find('ul')
-  elements: ->
-    item: 'input[name=item]'
-    list: 'ul'
+  elements: (add) ->
+    add('item', 'input[name=item]')
+    add('list', 'ul')
+    add('form', 'form')
 
   # Delegate some events to selectors and events found
   # within @el
-  events: ->
-    # Bind all form submits
-    form:
-      submit: (el, e) ->
-        # @ will always represent this instance *not* the
-        # DOMElement triggering the click
-        e.preventDefault()
-        @addItem(val) if val = @item.val()
-        @item.val('').focus()
+  events: (add) ->
+    add @form, 'submit', (el, e) ->
+      # @ will always represent this instance *not* the
+      # DOMElement triggering the click
+      e.preventDefault()
+      @addItem(val) if val = @item.val()
+      @item.val('').focus()
 
   # This is a custom method
   addItem: (item) ->
@@ -76,12 +75,11 @@ class TodoItem extends Uniform
     @el.prepend(@item)
 
   # Some more event delegation
-  events: ->
-    '.remove':
-      # This time we are using a string that references a
-      # Uniform.destroy which is a method that undelegates
-      # events and removes @el from the DOM
-      click: 'destroy'
+  events: (add) ->
+    # This time we are using a string that references a
+    # Uniform.destroy which is a method that undelegates
+    # events and removes @el from the DOM
+    add('.remove', 'click', 'destroy')
 
   destroy: ->
     next = @el.prev()

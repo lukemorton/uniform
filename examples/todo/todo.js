@@ -16,26 +16,21 @@
       return built("<div id=\"todo\">\n  <form>\n    <input name=\"item\" autofocus />\n  </form>\n  <ul></ul>\n</div>");
     };
 
-    TodoList.prototype.elements = function() {
-      return {
-        item: 'input[name=item]',
-        list: 'ul'
-      };
+    TodoList.prototype.elements = function(add) {
+      add('item', 'input[name=item]');
+      add('list', 'ul');
+      return add('form', 'form');
     };
 
-    TodoList.prototype.events = function() {
-      return {
-        form: {
-          submit: function(el, e) {
-            var val;
-            e.preventDefault();
-            if (val = this.item.val()) {
-              this.addItem(val);
-            }
-            return this.item.val('').focus();
-          }
+    TodoList.prototype.events = function(add) {
+      return add(this.form, 'submit', function(el, e) {
+        var val;
+        e.preventDefault();
+        if (val = this.item.val()) {
+          this.addItem(val);
         }
-      };
+        return this.item.val('').focus();
+      });
     };
 
     TodoList.prototype.addItem = function(item) {
@@ -72,12 +67,8 @@
       return this.el.prepend(this.item);
     };
 
-    TodoItem.prototype.events = function() {
-      return {
-        '.remove': {
-          click: 'destroy'
-        }
-      };
+    TodoItem.prototype.events = function(add) {
+      return add('.remove', 'click', 'destroy');
     };
 
     TodoItem.prototype.destroy = function() {
