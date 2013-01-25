@@ -82,18 +82,6 @@ Uniform git repo [https://github.com/DrPheltRight/uniform]().
 Clone the repository [https://github.com/DrPheltRight/uniform.git]()
 and then run "cake build" to make a fresh copy of Uniform.
 
-## Mini roadmap
-
-In a future version (v0.5.x) I will:
-
- - Remove object member definitions for events and elements
- - Continue support for methods returning objects for events
-   and elements
- - Add new callback array based definitions for events and
-   elements
- - Allow jquery objects and DOM elements along with selectors
-   to hook events to
-
 ## License
 
 MIT
