@@ -22,8 +22,8 @@ class Uniform
   # A namespace to create events under
   ns: 'Uniform'
 
-  # Have we previously delegated events?
-  has_delegated: no
+  # Store delegated events
+  delegated_events: []
 
   # The constructor takes one argument – an object – which can
   # override certain properties before initialising
@@ -33,6 +33,8 @@ class Uniform
 
     @uid or= ++Uniform.unique_counter
     @$ or= Uniform.$
+
+    @delegated_events = []
 
     @build_template(-> @init())
 
@@ -82,7 +84,7 @@ class Uniform
     return Array.isArray(arg) if Array.isArray?
     return Object.prototype.toString.call(arg) == '[object Array]'
   
-  # Delegate an event with an array of callbacks
+  # Delegate an event
   delegate_event = (event_type, selector, callback) ->
     if typeof selector is 'string'
       el = @el
@@ -90,28 +92,23 @@ class Uniform
       el = @$(selector)
       selector = ''
 
+    args = [ns_event.call(@, event_type)]
+    args.push(selector) unless selector is ''
+
     scope = @
-    event_type = ns_event.call(@, event_type)
-
-    # Build the el, event_type and selector into this delegator
-    delegate = do (el, event_type, selector) ->
-      if selector is ''
-        return (callback) -> el.on(event_type, callback)
-      else
-        return (callback) -> el.on(event_type, selector, callback)
-
-    # Now delegate every callback individually
     callback = @[callback] if typeof callback is 'string'
 
-    delegate ->
-      # We convert args to a real array
-      args = Array.prototype.slice.call(arguments)
+    # Add element which the event triggered on to the
+    # beginning of the args array applied to the callback
+    # Also ensures the scope of the callback is the Uniform
+    # object instead of the element (as per normal jQuery).
+    args.push ->
+      callback_args = Array.prototype.slice.call(arguments)
+      callback_args.unshift(@)
+      callback.apply(scope, callback_args)
 
-      # Unshift el to the beginning of args
-      args.unshift(@)
-
-      # Call the callback
-      callback.apply(scope, args)     
+    el.on.apply(el, args)
+    @delegated_events.push([el].concat(args))
 
   # Delegate events
   delegate_events: ->
@@ -128,13 +125,13 @@ class Uniform
       for event_type, callback of events
         add(selector, event_type, callback)
 
-    @has_delegated = yes
     return @
 
   # Undelegate all events
   undelegate_events: ->
-    @el.off(ns_event.call(@)) if @has_delegated
-    @has_delegated = no
+    while delegated_event = @delegated_events.pop()
+      [el, event_type] = delegated_event
+      el.off(event_type)
     return @
 
   # Undelegate and remove @el from the DOM!
