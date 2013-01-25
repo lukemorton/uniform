@@ -88,7 +88,7 @@
     // This method is run on construction, it prepends the name
     // to the <li> element in the template
     "init": function () {
-      TodoItem.__super__.init.apply(this, arguments)
+      TodoItem.__super__.init.call(this)
       this.el.prepend(this.item)
     },
 
@@ -115,7 +115,7 @@
         this.list.item.focus()
       }
 
-      TodoItem.__super__.destroy.apply(this, arguments)
+      TodoItem.__super__.destroy.call(this)
     }
   })
 
