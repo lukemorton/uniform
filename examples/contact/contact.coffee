@@ -19,10 +19,10 @@ class ContactForm extends Uniform
     # attach submit event to @el
     add 'submit', (el, e) ->
       e.preventDefault()
-      @sendResponse()
+      @send_response()
 
   # Do the sending :)
-  sendResponse: ->
+  send_response: ->
     @btn.text('Sending...')
     $.post 'index.html', msg: @msg, =>
       @msg.val('')

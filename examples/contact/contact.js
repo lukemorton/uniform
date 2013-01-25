@@ -24,11 +24,11 @@
     ContactForm.prototype.events = function(add) {
       return add('submit', function(el, e) {
         e.preventDefault();
-        return this.sendResponse();
+        return this.send_response();
       });
     };
 
-    ContactForm.prototype.sendResponse = function() {
+    ContactForm.prototype.send_response = function() {
       var _this = this;
       this.btn.text('Sending...');
       return $.post('index.html', {
