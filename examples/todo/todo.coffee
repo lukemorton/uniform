@@ -21,15 +21,15 @@ class TodoList extends Uniform
   """
 
   # Cache some elements, equivalent to the following:
-  #   @name = @find('input[name=name]')
+  #   @item = @find('input[name=name]')
   #   @list = @find('ul')
+  #   @form = @find('form')
   elements: (add) ->
     add('item', 'input[name=item]')
     add('list', 'ul')
     add('form', 'form')
 
-  # Delegate some events to selectors and events found
-  # within @el
+  # Register submit callback to @form
   events: (add) ->
     add @form, 'submit', (el, e) ->
       # @ will always represent this instance *not* the
