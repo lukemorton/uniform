@@ -7,33 +7,27 @@
 # https://github.com/DrPheltRight/uniform
 class Uniform
   
-  # Unique counter
   @unique_counter = 0
-
-  # Unique ID for this Uniform
-  uid: null
-  
-  # DOM element, that this object represents
-  el: null
-
-  # JS library, default is jQuery as set in constructor
-  $: null
-
-  # A namespace to create events under
-  ns: 'Uniform'
-
-  # Store delegated events
-  delegated_events: []
 
   # The constructor takes one argument – an object – which can
   # override certain properties before initialising
   # We also build the template if necessary and select a JS
   constructor: (settings) ->
     @[key] = val for key, val of settings when key in ['el', '$', 'ns', 'uid']
-
-    @uid or= ++Uniform.unique_counter
+ 
+    # DOM element, that this object represents
+    @el or= null
+    
+    # JS library, default is jQuery as set in constructor
     @$ or= Uniform.$
 
+    # A namespace to create events under
+    @ns or= 'Uniform'
+
+    # Unique ID for this Uniform
+    @uid or= ++Uniform.unique_counter
+
+    # Store delegated events
     @delegated_events = []
 
     @build_template(-> @init())
