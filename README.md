@@ -1,11 +1,12 @@
 # Uniform
 
-I present to you a view model for the browser. A view model
-(in this case) is a class that describes the behaviour of an
-element and it's children. It goes well with jQuery but can
-use whatever you like (e.g. Zepto).
+Uniform is a way of organising your front-end CoffeeScript.
+You describe individual components of your application as
+Uniform classes. They can be used for delegating events,
+describing behaviour and handle the building of elements.
 
-Here's an example:
+For example a contact form could have AJAX behaviour described
+as a Uniform class.
 
 ``` coffeescript
 # Let's describe a contact form
