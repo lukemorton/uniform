@@ -9,6 +9,19 @@ class Uniform
   
   @unique_counter = 0
 
+  @create_class = (methods) ->
+    klass = class extends Uniform
+      constructor: ->
+        if methods.construct?
+          methods.construct.apply(@, arguments)
+        else
+          super
+    
+    for method_name, method of methods when method_name isnt 'construct'
+      klass::[method_name] = method
+
+    return klass
+
   # The constructor takes one argument – an object – which can
   # override certain properties before initialising
   # We also build the template if necessary and select a JS
