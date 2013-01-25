@@ -118,4 +118,4 @@
     var todoList = new TodoList
     todoList.render()
   })
-}(window.jQuery);
+}(window.jQuery)
