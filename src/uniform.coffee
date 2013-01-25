@@ -103,16 +103,15 @@ class Uniform
     # Now delegate every callback individually
     callback = @[callback] if typeof callback is 'string'
 
-    do (callback) ->
-      delegate ->
-        # We convert args to a real array
-        args = Array.prototype.slice.call(arguments)
+    delegate ->
+      # We convert args to a real array
+      args = Array.prototype.slice.call(arguments)
 
-        # Unshift el to the beginning of args
-        args.unshift(@)
+      # Unshift el to the beginning of args
+      args.unshift(@)
 
-        # Call the callback
-        callback.apply(scope, args)     
+      # Call the callback
+      callback.apply(scope, args)     
 
   # Delegate events
   delegate_events: ->
