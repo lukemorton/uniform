@@ -1,11 +1,5 @@
-// A simple Todo application written in CoffeeScript
-//
-// To re-compile this example all you need to is run the
-// following command:
-//
-//  cake build:example
-//
-// Read through the comments and see if you like
+// A simple Todo application written using Uniform.create_class
+// CoffeeScript version: https://github.com/DrPheltRight/uniform/blob/develop/examples/todo/todo.coffee
 ! function ($) {
   "use strict";
 
