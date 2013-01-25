@@ -10,11 +10,6 @@ Here's an example:
 ``` coffeescript
 # Let's describe a contact form
 class ContactForm extends Uniform
-
-  # On initialise we want to add the form to the body
-  init: ->
-    super
-    $('body').append(@el)
     
   # The HTML template
   template: (built) -> built """
@@ -44,7 +39,9 @@ class ContactForm extends Uniform
       @btn.text('Send')
 
 # Initialise
-jQuery -> new ContactForm
+jQuery ->
+  form = new ContactForm
+  $('body').append(form.el)
 ```
 
 You can also use your view models on elements already in

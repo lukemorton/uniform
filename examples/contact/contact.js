@@ -12,11 +12,6 @@
       return ContactForm.__super__.constructor.apply(this, arguments);
     }
 
-    ContactForm.prototype.init = function() {
-      ContactForm.__super__.init.apply(this, arguments);
-      return $('body').append(this.el);
-    };
-
     ContactForm.prototype.template = function(built) {
       return built("<form>\n  <textarea></textarea>\n  <button>Send</button>\n</form>");
     };
@@ -49,7 +44,9 @@
   })(Uniform);
 
   jQuery(function() {
-    return new ContactForm;
+    var form;
+    form = new ContactForm;
+    return $('body').append(form.el);
   });
 
 }).call(this);
