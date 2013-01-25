@@ -10,7 +10,7 @@ class Uniform
   @unique_counter = 0
 
   @create_class = (methods) ->
-    klass = class extends Uniform
+    klass = class extends @
       constructor: ->
         if methods.constructor isnt ({}).constructor
           methods.constructor.apply(@, arguments)
