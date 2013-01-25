@@ -12,12 +12,12 @@ class Uniform
   @create_class = (methods) ->
     klass = class extends Uniform
       constructor: ->
-        if methods.construct?
-          methods.construct.apply(@, arguments)
+        if methods.constructor isnt ({}).constructor
+          methods.constructor.apply(@, arguments)
         else
           super
     
-    for method_name, method of methods when method_name isnt 'construct'
+    for method_name, method of methods when method_name isnt 'constructor'
       klass::[method_name] = method
 
     return klass

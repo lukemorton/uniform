@@ -72,7 +72,7 @@
 
   // Time to describe the individual todo items
   var TodoItem = Uniform.create_class({
-    "construct": function (list, item) {
+    "constructor": function (list, item) {
       this.list = list
       this.item = item
       TodoItem.__super__.constructor.call(this)
