@@ -82,6 +82,18 @@ Uniform git repo [https://github.com/DrPheltRight/uniform]().
 Clone the repository [https://github.com/DrPheltRight/uniform.git]()
 and then run "cake build" to make a fresh copy of Uniform.
 
+## Future developments
+
+ - Since we have added the add() syntax for events we can now
+   remove the need for a blank string to indicate placing the
+   listening directly on @el. The only thing that would break
+   is the object syntax which as of v0.5.x is deprecated and
+   will be remove in v0.6.x. So as of v0.6.x I will:
+
+    - remove the object syntax from events and elements
+    - remove the blank string syntax to put it in line with
+      jQuery's use of a blank string (match all elements)
+
 ## License
 
 MIT
