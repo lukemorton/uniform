@@ -89,14 +89,12 @@ and then run "cake build" to make a fresh copy of Uniform.
    listening directly on @el. The only thing that would break
    is the object syntax which as of v0.5.x is deprecated and
    will be remove in v0.6.x. So as of v0.6.x I will:
-
     - remove the object syntax from events and elements
     - remove the blank string syntax to put it in line with
       jQuery's use of a blank string (match all elements)
 
  - v0.5.x will see the introduction of a JS interface for
    Uniform. A current example can be found in:
-   
    https://github.com/DrPheltRight/uniform/blob/develop/examples/js-example/todo.js
 
 ## License
