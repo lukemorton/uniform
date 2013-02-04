@@ -12,7 +12,7 @@ class Uniform
   @create_class = (methods) ->
     klass = class extends @
       constructor: ->
-        if methods.constructor isnt ({}).constructor
+        if methods.constructor isnt Object
           methods.constructor.apply(@, arguments)
         else
           super
