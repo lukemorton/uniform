@@ -94,6 +94,5 @@ class TodoItem extends Uniform
 
     super
 
-
 # And render :)
 jQuery -> (new TodoList).render()
