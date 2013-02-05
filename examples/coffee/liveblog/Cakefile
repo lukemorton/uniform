@@ -1,4 +1,4 @@
-hogan = require('../lib/hogan/hogan')
+hogan = require('../../lib/hogan/hogan')
 path = require('path')
 fs = require('fs')
 {exec} = require 'child_process'
