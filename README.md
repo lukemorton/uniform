@@ -35,7 +35,7 @@ class ContactForm extends Uniform
   # Do the sending :)
   send_response: ->
     @btn.text('Sending...')
-    $.post 'index.html', msg: @msg, =>
+    $.post 'index.html', msg: @msg.val(), =>
       @msg.val('')
       @btn.text('Send')
 
