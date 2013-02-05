@@ -1,9 +1,10 @@
 # Uniform
 
-Uniform is a way of organising your front-end CoffeeScript.
-You describe individual components of your application as
-Uniform classes. They can be used for delegating events,
-describing behaviour and handle the building of elements.
+Uniform is a way of organising your front-end CoffeeScript or
+JavaScript. You describe individual components of your
+application as Uniform classes. They can be used for
+delegating events, describing behaviour and handle the
+building of elements.
 
 For example a contact form could have AJAX behaviour described
 as a Uniform class.
@@ -53,17 +54,60 @@ the DOM like so:
 jQuery -> new ContactForm(el: $('#contact'))
 ```
 
-## CoffeeScript in the browser?
+For completion here is the same again in JavaScript:
 
-Uniform is best used in compiled CoffeeScript browser
-environments. Since Uniform is a CoffeeScript class it is
-easiest to extend and use it if your front end code is also
-CoffeeScript.
+``` js
+// Let's describe a contact form
+! function ($) {
+  "use strict";
 
-Use it how you like though.
+  var ContactForm = Uniform.create_class({
+    
+    // The HTML template
+    "template": function (built) {
+      built("<form>"
+          + " <textarea></textarea>"
+          + "  <button>Send</button>"
+          + "</form>")
+    },
+
+    // We cache some children to properties on this object
+    "elements": function (add) {
+      add('msg', 'textarea')
+      add('btn', 'button')
+    },
+  
+    // We delegate the submit event to @sendResponse()
+    "events": function (add) {
+      // attach submit event to @el
+      add('submit', function (el, e) {
+        e.preventDefault()
+        this.sendResponse()
+      })
+    },
+
+    // Do the sending :)
+    sendResponse: function () {
+      this.btn.text('Sending...')
+      $.post('index.html', {msg: this.msg.val()}, $.proxy(function () {
+        this.msg.val('')
+        this.btn.text('Send')
+      }, this))
+    }
+  })
+
+  // Initialise
+  $(function () {
+    var form = new ContactForm
+    $('body').append(form.el)
+  })
+
+}(window.jQuery)
+```
 
 ## Features
 
+ - Can be used with CoffeeScript or JavaScript
  - Can build it's own element using a template
  - Can hook onto existing elements in the DOM instead of using
    a previously defined template
@@ -83,10 +127,6 @@ Clone the repository [https://github.com/DrPheltRight/uniform.git]()
 and then run "cake build" to make a fresh copy of Uniform.
 
 ## Future developments
-
- - v0.5.x will see the introduction of a JS interface for
-   Uniform. A current example can be found in:
-   https://github.com/DrPheltRight/uniform/blob/develop/examples/js-example/todo.js
 
  - Since we have added the add() syntax for events we can now
    remove the need for a blank string to indicate placing the
