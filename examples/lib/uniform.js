@@ -1,4 +1,4 @@
-// Uniform v0.5.0
+// Uniform v0.5.1
 // Written by Luke Morton, MIT licensed.
 // https://github.com/DrPheltRight/uniform
 !function (definition) {
@@ -36,8 +36,8 @@ Uniform = (function() {
       __extends(_Class, _super);
 
       function _Class() {
-        if (methods.construct != null) {
-          methods.construct.apply(this, arguments);
+        if (methods.constructor !== Object) {
+          methods.constructor.apply(this, arguments);
         } else {
           _Class.__super__.constructor.apply(this, arguments);
         }
@@ -45,10 +45,10 @@ Uniform = (function() {
 
       return _Class;
 
-    })(Uniform);
+    })(this);
     for (method_name in methods) {
       method = methods[method_name];
-      if (method_name !== 'construct') {
+      if (method_name !== 'constructor') {
         klass.prototype[method_name] = method;
       }
     }
