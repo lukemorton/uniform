@@ -87,7 +87,7 @@ For completion here is the same again in JavaScript:
     },
 
     // Do the sending :)
-    sendResponse: function () {
+    "sendResponse": function () {
       this.btn.text('Sending...')
       $.post('index.html', {msg: this.msg.val()}, $.proxy(function () {
         this.msg.val('')
