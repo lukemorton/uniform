@@ -23,32 +23,32 @@ class Uniform
     return klass
 
   # The constructor takes one argument – an object – which can
-  # override certain properties before initialising
-  # We also build the template if necessary and select a JS
+  # override certain properties before initialising.
+  # We also build the template if necessary and select a JS.
   constructor: (settings) ->
     @[key] = val for key, val of settings when key in ['el', '$', 'ns', 'uid']
  
-    # DOM element, that this object represents
+    # DOM element, that this object represents.
     @el or= null
     
-    # JS library, default is jQuery as set in constructor
+    # JS library, default is jQuery as set in constructor.
     @$ or= Uniform.$
 
-    # A namespace to create events under
+    # A namespace to create events under.
     @ns or= 'Uniform'
 
-    # Unique ID for this Uniform
+    # Unique ID for this Uniform.
     @uid or= ++Uniform.unique_counter
 
-    # Store delegated events
+    # Store delegated events.
     @delegated_events = []
 
     @build_template(-> @init())
 
-  # The template, blank by default
+  # The template, blank by default.
   template: (built) -> built ''
 
-  # Build the template if @el isn't set or is empty
+  # Build the template if @el isn't set or is empty.
   build_template: (callback) ->
     if @el?.length?
       callback.call(@)
@@ -60,18 +60,18 @@ class Uniform
 
     return @
 
-  # Elements are cached and events delegated by default
+  # Elements are cached and events delegated by default.
   init: ->
     @cache_elements()
     @delegate_events()
 
-  # The elements map
-  elements: (add) -> {}
+  # The elements map.
+  elements: (add) -> @
 
-  # Find elements relative to @el
+  # Find elements relative to @el.
   find: (sel) -> @el.find(sel)
 
-  # Cache elements relative to @elements
+  # Cache elements relative to @elements.
   cache_elements: ->
     add = (name, selector) =>
       @[name] = @find(selector)
@@ -80,61 +80,48 @@ class Uniform
     add(name, sel) for name, sel of @elements(add)
     return @
 
-  # The event map
-  events: (add) -> {}
+  # The event map.
+  events: (add) -> @
 
-  # Build a namespace event_type
+  # Build a namespace event_type.
   ns_event = (event_type = '') -> "#{event_type}.#{@ns}#{@uid}"
 
-  # Is array
+  # Is array.
   is_array = (arg) ->
     return Array.isArray(arg) if Array.isArray?
     return Object.prototype.toString.call(arg) == '[object Array]'
-  
-  # Delegate an event
-  delegate_event = (event_type, selector, callback) ->
-    if typeof selector is 'string'
-      el = @el
-    else
-      el = @$(selector)
-      selector = ''
 
-    args = [ns_event.call(@, event_type)]
-    args.push(selector) unless selector is ''
-
-    scope = @
-    callback = @[callback] if typeof callback is 'string'
-
-    # Add element which the event triggered on to the
-    # beginning of the args array applied to the callback
-    # Also ensures the scope of the callback is the Uniform
-    # object instead of the element (as per normal jQuery).
-    args.push ->
-      callback_args = Array.prototype.slice.call(arguments)
-      callback_args.unshift(@)
-      callback.apply(scope, callback_args)
-
-    el.on.apply(el, args)
-    @delegated_events.push([el].concat(args))
-
-  # Delegate events
+  # Delegate events.
   delegate_events: ->
     @undelegate_events()
 
-    add = (selector, event_type, callback) =>
-      unless callback?
-        [selector, event_type, callback] = ['', selector, event_type]
+    @events (selector, event_type, callback) =>
+      args = [ns_event.call(@, event_type)]
 
-      delegate_event.call(@, event_type, selector, callback)
-      return {}
+      if typeof selector is 'string'
+        el = @el
+        args.push(selector)
+      else
+        el = @$(selector)
 
-    for selector, events of @events(add)
-      for event_type, callback of events
-        add(selector, event_type, callback)
+      scope = @
+      callback = @[callback] if typeof callback is 'string'
+
+      # Add element which the event triggered on to the
+      # beginning of the args array applied to the callback
+      # Also ensures the scope of the callback is the Uniform
+      # object instead of the element (as per normal jQuery).
+      args.push ->
+        callback_args = Array.prototype.slice.call(arguments)
+        callback_args.unshift(@)
+        callback.apply(scope, callback_args)
+
+      el.on.apply(el, args)
+      @delegated_events.push([el].concat(args))
 
     return @
 
-  # Undelegate all events
+  # Undelegate all events.
   undelegate_events: ->
     while delegated_event = @delegated_events.pop()
       [el, event_type] = delegated_event
